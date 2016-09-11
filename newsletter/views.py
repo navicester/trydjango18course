@@ -5,7 +5,8 @@ from django.core.mail import send_mail
 from .forms import SignUpForm,ContactForm
 from .models import SignUp
 
-def home(request):
+def home(request):    
+
     title = 'Welcome'
     form = SignUpForm(request.POST or None)
     context = {
