@@ -30,3 +30,16 @@ def home(request):
 		}
 
 	return render(request, "home.html", context)
+
+def contact(request):
+	form = ContactForm(request.POST or None)
+
+	if form.is_valid():
+		# for key, value in form.cleaned_data.iteritems():
+		# 	print key, value
+		# 	#print form.cleaned_data.get(key)
+
+	context = {
+		"form": form,
+	}
+	return render(request, "forms.html", context)
