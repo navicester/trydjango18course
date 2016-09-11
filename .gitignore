@@ -2,7 +2,6 @@ bin/
 include/
 lib/
 
-static_in_pro/
 
 pip-selfcheck.json
 *.sqlite3
