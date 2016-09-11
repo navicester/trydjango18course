@@ -1,5 +1,0 @@
-EMAIL_HOST = 'smtp.sina.com'
-EMAIL_HOST_USER = 'hebinn2004@sina.com'
-EMAIL_HOST_PASSWORD = 'navice_190124'
-EMAIL_PORT = 25
-EMAIL_USE_TLS = True
