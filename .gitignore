@@ -13,6 +13,7 @@ pip-selfcheck.json
 .settings/
 
 security_setting.py
+settings_security.py
 
 *.sublime-project
 *.sublime-workspace
