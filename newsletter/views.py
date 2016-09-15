@@ -50,7 +50,8 @@ def contact(request):
         # print email, message, full_name
         subject = 'Site contact form'
         from_email = settings.EMAIL_HOST_USER
-        to_email = [from_email, 'hebinn2004@sina.com']
+        to_email = [from_email, form_email]
+
         contact_message = "%s: %s via %s"%( 
                 form_full_name, 
                 form_message, 
@@ -58,6 +59,16 @@ def contact(request):
         some_html_message = """
         <h1>hello</h1>
         """
+
+        # import smtplib
+        # try:
+        #     smtpObj = smtplib.SMTP() 
+        #     smtpObj.connect(settings.EMAIL_HOST, 25)
+        #     smtpObj.login(settings.EMAIL_HOST_USER,settings.EMAIL_HOST_PASSWORD)  
+        #     smtpObj.sendmail(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_USER, some_html_message)
+        #     print "sent successfully !!!!!!!!!!!!!!!!"
+        # except smtplib.SMTPException:
+        #     print "Error: sent fail $$$$$$$$$$$$$$"
 
         send_mail(subject, 
                 contact_message, 
@@ -73,12 +84,3 @@ def contact(request):
     }
     return render(request, "forms.html", context)
 
-        # import smtplib
-        # try:
-        #     smtpObj = smtplib.SMTP() 
-        #     smtpObj.connect(settings.EMAIL_HOST, 25)
-        #     smtpObj.login(settings.EMAIL_HOST_USER,settings.EMAIL_HOST_PASSWORD)  
-        #     smtpObj.sendmail(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_USER, some_html_message)
-        #     print "sent successfully !!!!!!!!!!!!!!!!"
-        # except smtplib.SMTPException:
-        #     print "Error: sent fail $$$$$$$$$$$$$$"

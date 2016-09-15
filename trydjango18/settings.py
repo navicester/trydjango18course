@@ -27,6 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+ADMINS = (
+    ('countrysidedog', 'csdog@countrysidedog.com'),
+)
 
 # Application definition
 
@@ -36,9 +39,11 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sites',
     'django.contrib.staticfiles',
 	'newsletter',
     'crispy_forms',
+    'registration',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -114,6 +119,39 @@ MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_in_env", "media_roo
 
 
 import settings_security
+EMAIL_HOST_USER = settings_security.USER_NAME
+EMAIL_HOST_PASSWORD = settings_security.USER_PWD
+EMAIL_HOST = 'smtp.sina.com'
+EMAIL_PORT = 25
+EMAIL_USE_TLS = True
+
+DEFAULT_FROM_EMAIL = settings_security.USER_NAME
+
+
+'''
+EMAIL_HOST = 'smtp.sina.com'
+EMAIL_PORT = 25
+
+EMAIL_HOST = 'smtp.163.com'
+EMAIL_PORT = 465
+
+EMAIL_HOST = 'smtp.exmail.qq.com'
+EMAIL_PORT = 465
+'''
+
+
+
 
 #Crispy FORM TAGs SETTINGS
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+#DJANGO REGISTRATION REDUX SETTINGS
+ACCOUNT_ACTIVATION_DAYS = 7
+REGISTRATION_AUTO_LOGIN = True
+SITE_ID = 1
+
+LOGIN_REDIRECT_URL = '/'
+REGISTRATION_EMAIL_SUBJECT_PREFIX = '[Django Registration trydjango18]'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+SEND_ACTIVATION_EMAIL = True
+
