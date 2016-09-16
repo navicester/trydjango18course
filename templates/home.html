@@ -3,9 +3,26 @@
 
 {% block head_title %}Welcome | {% endblock %}
 
+<style>
+{% block style %}
+.jumbotron {
+    background-color: #0E3D14 !important;
+    color : #337AB7;
+}
+{% endblock %}
+</style>
+
+<style>
+.jumbotron {
+    background-color: #0E3D14 !important;
+    color : #337AB7;
+}
+</style>
+
 {% block jumbotron %}
 <!-- Main component for a primary marketing message or call to action -->
 <div class="jumbotron">
+<div class="container">
   <div class="row">
     <div class="col-sm-6">
         <h1>Try Django1.8</h1>
@@ -19,6 +36,7 @@
 
     </div>
   </div>
+</div>
 </div>
 {% endblock %}
 
