@@ -13,6 +13,8 @@ pip-selfcheck.json
 .project
 .settings/
 
+static_in_env/
+
 security_setting.py
 settings_security.py
 
