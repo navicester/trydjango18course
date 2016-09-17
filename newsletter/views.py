@@ -7,7 +7,7 @@ from .models import SignUp
 
 def home(request):    
 
-    title = 'Welcome'
+    title = 'Sign Up now'
     form = SignUpForm(request.POST or None)
     context = {
         "title": title,
@@ -32,6 +32,10 @@ def home(request):
             "title": "Thank you"
         }
 
+    if request.user.is_authenticated() and request.user.is_staff:
+        context = {
+            "queryset" : [123,456]
+        }
     return render(request, "home.html", context)
 
 def contact(request):
