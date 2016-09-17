@@ -33,8 +33,9 @@ def home(request):
         }
 
     if request.user.is_authenticated() and request.user.is_staff:
+        queryset = SignUp.objects.all().order_by('-timestamp') #.filter(full_name__iexact="Justin")        
         context = {
-            "queryset" : [123,456]
+            "queryset" : queryset
         }
     return render(request, "home.html", context)
 
