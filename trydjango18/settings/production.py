@@ -12,5 +12,3 @@ TEMPLATE_DEBUG = True
 
 # Allow all host headers
 ALLOWED_HOSTS = ['*']
-
-print DATABASES['default']
