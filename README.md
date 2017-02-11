@@ -77,6 +77,7 @@ pip freeze > requirements.txt将安装软件信息存储到requirements.txt
 (trydjango18) D:\virtualdir\trydjango18>rename trydjango18 src
 (trydjango18) D:\virtualdir\trydjango18>dir
 ```
+> 
 <pre> 
  Volume in drive D is HP_RECOVERY
  Volume Serial Number is E237-2AC8
@@ -101,6 +102,7 @@ Directory of D:\virtualdir\trydjango18
 ``` dos
 (trydjango18) D:\virtualdir\trydjango18\src>python manage.py runserver
 ```
+> 
 <pre>
 Performing system checks...
 
@@ -128,6 +130,57 @@ git remote add origin git@github.com:navicester/trydjango18course.git
 git push -u origin master
 ```
 
+# 2 First Migration
+``` dos
+(trydjango18) D:\virtualdir\trydjango18\src>python manage.py migrate
+```
+如果直接运行migrate命令，会有报错: settings.DATABASES is improperly configured,这是因为我们的database没有配置好
 
+## 修改settings.py
+添加 “ENGINE” 和 “NAME” 配置，例子中我们选用sqlite3，关于mysql的配置会有专门章节介绍
+> 
+<pre>
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'db.sqlite3',                      # Or path to database file if using sqlite3.
+        # The following settings are not used with sqlite3:
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'PORT': '',                      # Set to empty string for default.
+    }
+}
+</pre>
+
+Database配置好了之后，再次运行migrate
+
+``` dos
+(trydjango18) D:\virtualdir\trydjango18\src>python manage.py migrate
+```
+> 
+<pre>
+Operations to perform:
+  Synchronize unmigrated apps: staticfiles, messages
+  Apply all migrations: contenttypes, sites, auth, sessions
+Synchronizing apps without migrations:
+  Creating tables...
+    Running deferred SQL...
+  Installing custom SQL...
+Running migrations:
+  Rendering model states... DONE
+  Applying contenttypes.0001_initial... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0001_initial... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying sessions.0001_initial... OK
+  Applying sites.0001_initial... OK
+  </pre>
+  
+  python manage.py syncdb从1.9开始会被删除掉
 
 
