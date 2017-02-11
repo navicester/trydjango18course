@@ -97,5 +97,37 @@ Directory of D:\virtualdir\trydjango18
 ```
 > Include  Lib  Scripts  pip-selfcheck.json  src
 
+## Emulate a django server
+``` dos
+(trydjango18) D:\virtualdir\trydjango18\src>python manage.py runserver
+```
+<pre>
+Performing system checks...
+
+System check identified no issues (0 silenced).
+February 09, 2016 - 19:48:35
+Django version 1.8, using settings 'trydjango18.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+</pre>
+
+默认端口是8000, 也可以通过下列命令制定端口
+``` dos
+python manage.py runserver 8080
+python manage.py runserver 0.0.0.0:8000
+```
+
+## 将代码提交到github
+先创建repository trydjango18course
+``` dos
+echo "# trydjango18course" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin git@github.com:navicester/trydjango18course.git
+git push -u origin master
+```
+
+
 
 
