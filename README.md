@@ -278,7 +278,7 @@ templates\navbar.html
 ```
 
 ## 添加view里面的实现
-`newsletter\view.py`
+文件`newsletter\view.py`
 ``` python
 from django.shortcuts import render 
 
