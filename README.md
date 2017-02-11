@@ -375,3 +375,55 @@ TEMPLATES = [
     },
 ]
 ```
+## TEMPLATE_DIRS
+
+Default: () (Empty tuple)
+Deprecated since version 1.8: Set the DIRS option of a DjangoTemplates backend instead.
+
+List of locations of the template source files searched by django.template.loaders.filesystem.Loader, in search order.
+Note that these paths should use Unix-style forward slashes, even on Windows.
+
+## TEMPLATE_CONTEXT_PROCESSORS
+
+Default:
+``` python
+(
+    "django.contrib.auth.context_processors.auth",
+    "django.template.context_processors.debug",
+    "django.template.context_processors.i18n",
+    "django.template.context_processors.media",
+    "django.template.context_processors.static",
+    "django.template.context_processors.tz",
+"django.contrib.messages.context_processors.messages"
+)
+```
+
+**Deprecated since version 1.8**: Set the 'context_processors' option in the OPTIONS of a DjangoTemplates backend instead.
+
+A tuple of callables that are used to populate the context in RequestContext. These callables take a request object as their argument and return a dictionary of items to be merged into the context.
+
+Changed in Django 1.8: 
+
+Built-in template context processors were moved from django.core.context_processors to django.template.context_processors in Django 1.8.
+
+## TEMPLATE_LOADERS
+Default:
+``` python
+(
+    'django.template.loaders.filesystem.Loader',
+     'django.template.loaders.app_directories.Loader'
+)
+```
+
+**Deprecated since version 1.8**: Set the 'loaders' option in the OPTIONS of a DjangoTemplates backend instead.
+
+A tuple of template loader classes, specified as strings. Each Loader class knows how to import templates from a particular source. Optionally, a tuple can be used instead of a string. The first item in the tuple should be the Loader’s module, subsequent items are passed to the Loader during initialization. See The Django template language: for Python programmers.
+
+
+
+
+
+
+
+
+
