@@ -183,4 +183,65 @@ Running migrations:
   
   python manage.py syncdb从1.9开始会被删除掉
 
+# 3 Admin & SuperUser
+**Createsuperuser**命令可以用来创建超级用户，该命令任意时间都能执行
+``` dos
+(trydjango18) D:\virtualdir\trydjango18\src>python manage.py createsuperuser
+```
+> 
+<pre>
+Username (leave blank to use 'alu'): alu
+Email address: navicester@qq.com
+Password:
+Password (again):
+Superuser created successfully.
+</pre>
+
+``` dos
+(trydjango18) D:\virtualdir\trydjango18\src>python manage.py syncdb
+```
+> 
+<pre>
+D:\virtualdir\trydjango18\lib\site-packages\django\core\management\commands\syncdb.py:24: RemovedInDjango19Warning: The syncdb command will be removed in Django 1.9
+  warnings.warn("The syncdb command will be removed in Django 1.9", RemovedInDjango19Warning)
+
+Operations to perform:
+  Synchronize unmigrated apps: staticfiles, admindocs, messages
+  Apply all migrations: admin, contenttypes, sites, auth, sessions
+Synchronizing apps without migrations:
+  Creating tables...
+    Running deferred SQL...
+  Installing custom SQL...
+Running migrations:
+  Rendering model states... DONE
+  Applying admin.0001_initial... OK
+  </pre>
+  
+  ## enable admin
+  去掉setting和url中的一些注释语句
+  
+  setting.py
+  
+  ``` python
+  INSTALLED_APPS = (
+    # Uncomment the next line to enable the admin:
+    'django.contrib.admin',
+    # Uncomment the next line to enable admin documentation:
+    'django.contrib.admindocs',
+)
+```
+urls.py
+``` python
+# Uncomment the next two lines to enable the admin:
+from django.contrib import admin
+admin.autodiscover()
+
+urlpatterns = patterns('',
+    # Uncomment the admin/doc line below to enable admin documentation:
+    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    # Uncomment the next line to enable the admin:
+    url(r'^admin/', include(admin.site.urls)),
+)
+```
+
 
