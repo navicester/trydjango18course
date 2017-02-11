@@ -242,4 +242,49 @@ urlpatterns = patterns('',
 )
 ```
 
+# 4 APPS
+``` dos
+(trydjango18) D:\virtualdir\trydjango18\src>python manage.py startapp newsletter
+```
+我们不能创建两个名字完全一样的application，但是可以创建于类似“admin” 这种build-in site-packages的application
 
+它会创建下面文件
+> 
+<pre>
+newsletter/
+     __init__.py
+     models.py
+     tests.py
+     views.py
+     </pre>
+
+# 5 FIRST VIEW AND URL ROUTING
+添加最基本的view功能
+
+## 首先添加url
+trydjango18\urls.py
+``` python
+urlpatterns = patterns('',
+    # Examples:
+    url(r'^$', 'newsletter.views.home', name='home'),
+)
+```
+这儿的name后面可以用在template里面的url引用，例如
+
+templates\navbar.html
+
+``` html
+<li class="active"><a href="{% url 'home' %}">Home</a></li>
+```
+
+## 添加view里面的实现
+newsletter\view.py
+``` python
+from django.shortcuts import render 
+
+# Create your views here.
+def home(request):
+	context = {}
+	return render(request, "home.html", context)
+
+```
