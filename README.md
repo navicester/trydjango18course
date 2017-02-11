@@ -105,7 +105,6 @@ Directory of D:\virtualdir\trydjango18
 > 
 <pre>
 Performing system checks...
-
 System check identified no issues (0 silenced).
 February 09, 2016 - 19:48:35
 Django version 1.8, using settings 'trydjango18.settings'
@@ -204,7 +203,6 @@ Superuser created successfully.
 <pre>
 D:\virtualdir\trydjango18\lib\site-packages\django\core\management\commands\syncdb.py:24: RemovedInDjango19Warning: The syncdb command will be removed in Django 1.9
   warnings.warn("The syncdb command will be removed in Django 1.9", RemovedInDjango19Warning)
-
 Operations to perform:
   Synchronize unmigrated apps: staticfiles, admindocs, messages
   Apply all migrations: admin, contenttypes, sites, auth, sessions
