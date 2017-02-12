@@ -419,6 +419,90 @@ Default:
 
 A tuple of template loader classes, specified as strings. Each Loader class knows how to import templates from a particular source. Optionally, a tuple can be used instead of a string. The first item in the tuple should be the Loader’s module, subsequent items are passed to the Loader during initialization. See The Django template language: for Python programmers.
 
+# 7	TEMPLATE CONFIGURATION
+
+``` django
+# Create your views here.
+def home(request):
+	context = {}
+	return render(request, "home.html", context)
+```
+
+如果不创建template的话, http://127.0.0.1:8000/ 将会报告下面的错误调试信息
+
+<pre>
+TemplateDoesNotExist 
+Template-loader postmortem
+Django tried loading these templates, in this order:
+    •	Using loader django.template.loaders.filesystem.Loader: 
+    •	Using loader django.template.loaders.app_directories.Loader: 
+        o	D:\virtualdir\trydjango18\lib\site-packages\django\contrib\auth\templates\home.html (File does not exist)
+        o	D:\virtualdir\trydjango18\lib\site-packages\django\contrib\admin\templates\home.html (File does not exist)
+        o	D:\virtualdir\trydjango18\lib\site-packages\django\contrib\admindocs\templates\home.html (File does not exist)
+</pre>
+
+在newsletter下面创建template目录，并且在“INSTALLED_APPS”下面添加“newsletter”，django将会搜索该template目录
+``` django
+INSTALLED_APPS = (
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+	'newsletter'
+)
+```
+
+如果将newsletter注释掉，django会不找不到模板文件
+> 
+<pre>
+Template-loader postmortem
+Django tried loading these templates, in this order:
+    •	Using loader django.template.loaders.filesystem.Loader: 
+    •	Using loader django.template.loaders.app_directories.Loader: 
+        o	D:\virtualdir\trydjango18\lib\site-packages\django\contrib\auth\templates\home.html (File does not exist)
+        o	D:\virtualdir\trydjango18\lib\site-packages\django\contrib\admin\templates\home.html (File does not exist)
+        o	D:\virtualdir\trydjango18\lib\site-packages\django\contrib\admindocs\templates\home.html (File does not exist)
+        o	D:\virtualdir\trydjango18\src\newsletter\templates\home.html (File does not exist)
+</pre>
+
+在“newsletter”下面创建文件“home.html”, it works
+
+本例子中，我们把templates从application目录中移到root文件夹，在src目录创建templates文件夹
+
+修改settings.py
+
+``` django
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, "templates")],
+        'APP_DIRS': True, # Whether the engine should look for template source files inside installed applications.
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+```
+
+如果home.html没有创建，django会抛出下面异常，否则, it works.
+> 
+<pre>
+Template-loader postmortem
+Django tried loading these templates, in this order:
+    •	Using loader django.template.loaders.filesystem.Loader: 
+        o	D:\virtualdir\trydjango18\src\templates\home.html (File does not exist)
+    •	Using loader django.template.loaders.app_directories.Loader: 
+        o	D:\virtualdir\trydjango18\lib\site-packages\django\contrib\auth\templates\home.html (File does not exist)
+        o	D:\virtualdir\trydjango18\lib\site-packages\django\contrib\admin\templates\home.html (File does not exist)
+        o	D:\virtualdir\trydjango18\lib\site-packages\django\contrib\admindocs\templates\home.html (File does not exist)
+</pre>
 
 
 
