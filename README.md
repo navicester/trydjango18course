@@ -679,6 +679,8 @@ class SignUpForm(forms.ModelForm):
 ```
 
 # 13	VIEW AND TEMPLATE CONTEXT
+
+渲染模板
 ``` python
 from django.shortcuts import render
 
@@ -694,6 +696,9 @@ def home(request):
 
 	return render(request, "home.html", context)
 ```
+
+初始模板文件
+
 home.html
 ``` vbscript-html
 <h1>{{title}}</h1>
@@ -738,32 +743,39 @@ def home(request):
 
 	return render(request, "home.html", context)
 ```
-form = SignUpForm(request.POST or None)这句话中记得加 or None，否则的话SignUpForm会一直执行Validation
+
+`form = SignUpForm(request.POST or None)`这句话中记得加 or None，否则的话SignUpForm会一直执行Validation
 
 即使只是网址GET访问，也会出现下列validation错误
 
-![init project file](static_in_pro/media/F14_form_validation_error.png)
+![F14_form_validation_error](static_in_pro/media/F14_form_validation_error.png)
 	
 调用form.is_valid，form会执行form类里面的那些validation函数
-form.save(commit=False)并不会真正的保存数据 ，instance.save()才会真正保存
+
+`form.save(commit=False)`并不会真正的保存数据 ，instance.save()才会真正保存
 > 
 This save() method accepts an optional commit keyword argument, which accepts either True or False. If you call save() with commit=False, then it will return an object that hasn’t yet been saved to the database. In this case, it’s up to you to call save() on the resulting model instance.
 
+添加表单内容
+
 home.html
+
 ``` html
 <h1>{{title}}</h1>
 {{user}}
 {{request.user}}
 <form method="POST" action=''> {% csrf_token%}
-{{form.as_p}}
-<input type="submit" value="sign up">
+	{{form.as_p}}
+	<input type="submit" value="sign up">
 </form>
 ```
 action指定了提交之后的重定向地址，可以用”.”
+
 as_p = as paragraph
 
 ## GET vs POST
-![init project file](static_in_pro/media/F14_form_get_post.png) 
+![F14_form_get_post](static_in_pro/media/F14_form_get_post.png) 
+
 Home函数里添加下列打印
 ``` python
 	print request
@@ -773,13 +785,17 @@ Home函数里添加下列打印
 
 如果只是执行网址访问http://127.0.0.1:8000/
 > 
+<pre>
 <WSGIRequest: GET '/'>
 <QueryDict: {}>
+</pre>
 
 如果按”sign up”提交
 > 
+<pre>
 <WSGIRequest: POST '/'>
 <QueryDict: {u'csrfmiddlewaretoken': [u'xcdCoiISxk5yS4GSbVHENmjWwnhvj7kk'], u'email': [u'bin@gmail.edu'], u'full_name': [u'bin']}>
+</pre>
 
 # 15	CUSTOM FORM IN A VIEW (NON MODELFORM)
 在forms.py中添加contactForm
