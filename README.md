@@ -1382,5 +1382,36 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 SEND_ACTIVATION_EMAIL = True
 ```
 
+# 29	AUTHENTICATION LINKS IN NAVBAR
+
+navbar.html
+``` html
+          <ul class="nav navbar-nav navbar-right">
+          {% if request.user.is_authenticated %}
+            <li><a href="{% url 'auth_logout' %}">Logout</a></li>
+            {% else %}
+            <li><a href="{% url 'registration_register' %}">Register</a></li>
+            <li><a href="{% url ' auth_login' %}">Login</a></li>
+            {% endif %}
+          </ul>
+```          
+registration_register  is url name of register (django-registration-redux)
+
+# 30	LOGIN FORM IN BOOTSTRAP NAVBAR
+navbar.html
+``` html
+          {% if not request.user.is_authenticated and not "/accounts/login" in request.get_full_path %}
+            <form class='navbar-form navbar-right' method='POST' action='{% url "auth_login" %}'>{% csrf_token %}
+              <div class='form-group'>
+                  <input type='text' class='form-control' name='username' placeholder='Username' /> 
+              </div>
+              <div class='form-group'>
+                  <input type='password' class='form-control' name='password' placeholder='Password' />
+              </div>
+              <button type='submit' class='btn btn-default'>Login</button>
+          </form>
+          {% endif %}
+```          
+这人action的link action='{% url "auth_login" %}'就是前面的Login，这儿的用户名和密码的name也是一致的
 
 
