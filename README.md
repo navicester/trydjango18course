@@ -70,7 +70,7 @@ pip freeze > requirements.txt将安装软件信息存储到requirements.txt
     settings.py
     urls.py
 </pre>
-
+![](static_in_pro\media\F01_project_files.png)
 为避免与virtualenv名字冲突，把项目目录改成 “src”
 
 ``` dos
