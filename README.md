@@ -602,6 +602,7 @@ class SignUpAdmin(admin.ModelAdmin):
 admin.site.register(SignUp, SignUpAdmin)
 ```
 
+
 # 11	MODEL FORM
 Newsletter下面添加文件forms.py
 ``` python
@@ -808,7 +809,7 @@ EMAIL_PORT = 25
 EMAIL_USE_TLS = True
 ```
 views.py
-```
+``` python
 from django.conf import settings
 from django.core.mail import send_mail
 
@@ -1039,9 +1040,131 @@ Grid systems are used for creating page layouts through a series of rows and col
 如果想要固定宽度fixed, 使用 `col-xs-???`, 否则当屏幕变得更小级别时，它会变成全屏.
 例如，如果你使用`col-sm-3`, 在smal size或者更大宽度显示时，它会显示1/4（3/12）屏幕宽度, 但是如果转到xsmall屏幕时，它将会100%显示.
 
+# 23	STYLING MVP LANDING PART1
+``` python
+{% block jumbotron %}
+	<div class="jumbotron">
+	  <div class="container">
+		<div class="row">
+	      <div class='col-sm-6'>
+			<h1>Try Django 1.8</h1>
+			<p>The MVP Landing project is designed to get your project started. The goal is to help you launch as soon as possible with the least amount of investment using time or money. Join Us today.</p>
+			<p>
+			  <a class="btn btn-lg btn-primary" href="" role="button">Join Us &raquo;</a>
+			</p>
+		  </div>
+	 	  <div class='col-sm-6 style=”background-color:black;heigh:300px;”>
+	 	  </div>
+	    </div>
+	  </div>
+	</div>
+{% endblock %}
+```
 
+``` python
+{% block content %}
+<div class="row">
+  <div class="col-xs-3 pull-right">
+    <h1>{{title}}</h1>
+    {{user}}
+    {{request.user}}
+    <form method="POST" action=''> {% csrf_token%}
+    {{form|crispy}}
+    <input type="submit" value="sign up">
+    </form>
+  </div>
+</div>
+{% endblock %}
+```
 
+``` python
+{% block content %}
+	<div class="row">
+		<div class=" col-sm-3  pull-right">
+			<p class='lead text-align-center'>{{ title }}</p>
+			<form method="POST" action=''> {% csrf_token%}
+			{{ form|crispy }}
+			<input type="submit" value="sign up">
+			</form>
+		</div>	
 
+		<div class='col-sm-3'>
+		    <p class='lead text-align-center'>Django &amp; Bootstrap</p>
+		</div>
+
+		<div class='col-sm-3'>
+		    <p class='lead text-align-center'>Created for Starters 
+		    <br/>
+		    </p>
+		</div>
+
+		<div class='col-sm-3'>
+		    <p class='lead text-align-center'>Always Open Source <br/><br/>
+			</p>
+		</div>	
+	</div>
+{% endblock%}
+ ```
+ 
+`<div class="container-fluid">`会全屏平铺显示
+
+# 24	CSS WITH BLOCKS
+
+## Style
+In base.html
+``` html
+    <style>
+    {% block style %}{% endblock %}
+    </style>
+```    
+Extend in home.html
+``` html
+<style>
+{% block style %}
+.text-align-center {
+	text-align: center;
+}
+.navbar-static-top {
+	margin-bottom: 0px !important;
+}
+{% endblock %}
+</style>
+```
+text-align-center can also be moved to css\custom.css
+
+同时在head_css.html添加
+``` html
+<link href="{% static 'css/custom.css' %}" rel="stylesheet">
+```
+
+``` python
+{% block content %}
+	<div class="row">
+		<div class=" col-sm-3  pull-right">
+			<p class='lead text-align-center'>{{ title }}</p>
+			<form method="POST" action=''> {% csrf_token%}
+			{{ form|crispy }}
+			<input type="submit" value="sign up">
+			</form>
+		</div>	
+
+		<div class='col-sm-3'>
+		    <p class='lead text-align-center'>Django &amp; Bootstrap</p>
+		</div>
+
+		<div class='col-sm-3'>
+		    <p class='lead text-align-center'>Created for Starters 
+		    <br/>
+		    </p>
+		</div>
+
+		<div class='col-sm-3'>
+		    <p class='lead text-align-center'>Always Open Source <br/><br/>
+			</p>
+		</div>	
+	</div>
+{% endblock%}
+```
 
 
 
