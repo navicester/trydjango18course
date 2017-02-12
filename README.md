@@ -1,32 +1,39 @@
 
 # 1 Start Project
-## virtualenv 
+## 创建开发环境 virtualenv 
+工作目录：D:\virtualdir\trydjango18
 ``` dos
 D:\>mkdir virtualdir
 D:\>cd virtualdir
 D:\>virtualenv trydjango18
 ```
 > 
+<pre>
 New python executable in trydjango18\Scripts\python.exe  
 Installing setuptools, pip, wheel...done.  
+</pre>
 
+查看生成的文件:
 ``` dos
 D:\virtualdir\trydjango18>ls
 ```
 > 
+<pre>
 Include  Lib  Scripts
+</pre>
 
 视频教程里面苹果系统生成的目录是 bin include lib
 
-激活命令 source bin/activate
+## 激活虚拟环境
+视频激活命令 source bin/activate
 
 Windows激活
-
 ``` dos
 D:\virtualdir\trydjango18>Scripts\activate
 ```
 > (trydjango18) D:\virtualdir\trydjango18>
 
+查看生成的库
 ``` dos
 (trydjango18) D:\virtualdir\trydjango18>pip freeze
 ```
@@ -38,11 +45,13 @@ D:\virtualdir\trydjango18>Scripts\activate
 可以从django网站获取最新的django版本信息  
 https://www.djangoproject.com/download/  
 通过pip安装django  
-pip install django 会安装最新的版本  
+`pip install django` 会安装最新的版本  
 
+指定版本安装
 ``` dos
 (trydjango18) D:\virtualdir\trydjango18>pip install django==1.8
 ```
+
 安装完成之后可以通过pip freeze查看当前的版本信息
 ``` dos
 (trydjango18) D:\virtualdir\trydjango18>pip freeze
@@ -51,8 +60,8 @@ pip install django 会安装最新的版本
 Django==1.8  
 wheel==0.24.0  
 
-pip freeze > requirements.txt将安装软件信息存储到requirements.txt  
-后面可以通过pip install –r requirements.txt直接安装全部软件
+`pip freeze > requirements.txt` 将安装软件信息存储到requirements.txt  
+后面可以通过`pip install –r requirements.txt`直接安装全部软件
 
 ## Start Project
 ``` dos
@@ -71,7 +80,7 @@ pip freeze > requirements.txt将安装软件信息存储到requirements.txt
     urls.py
 </pre>
 
-![init project file](static_in_pro/media/F02_project_files.png)
+![](static_in_pro/media/F02_project_files.png)
 
 为避免与virtualenv名字冲突，把项目目录改成 “src”
 
