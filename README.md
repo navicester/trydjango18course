@@ -524,6 +524,7 @@ Django tried loading these templates, in this order:
 
 # 9	MODELS
 https://docs.djangoproject.com/en/1.8/ref/models/
+
 https://docs.djangoproject.com/en/1.8/ref/models/fields/
 
 ``` python
@@ -540,6 +541,7 @@ class SignUp(models.Model):
 		return self.email
 ```
 ## migrate database
+
 makemigrations : 初始化migrations
 
 migrates : 实际运行migrations并且存储到database
@@ -572,11 +574,9 @@ Running migrations:
 </pre>
 
 如果不做修改重新执行该命令，将显示No migrations to apply
-
 ``` dos
 (trydjango18) D:\virtualdir\trydjango18\src>python manage.py migrate
 ```
-
 > 
 <pre>
 Operations to perform:
@@ -594,7 +594,7 @@ Running migrations:
 # 10	ADMIN
 将自己的模块加入管理工具中，这样我们就能够通过这个漂亮的界面添加、修改和删除数据库中的对象了。
 
-在Admin中注册SignUp
+## 在Admin中注册SignUp
 ``` python
 from django.contrib import admin
 from .models import SignUp
@@ -603,8 +603,8 @@ admin.site.register(SignUp, SignUpAdmin)
 ```
 
 model将会显示在admin中
-![init project file](static_in_pro/media/F07_admin_newsletter.png)
-![init project file](static_in_pro/media/F07_admin_newsletter2.png)
+![F07_admin_newsletter](static_in_pro/media/F07_admin_newsletter.png)
+![F07_admin_newsletter2](static_in_pro/media/F07_admin_newsletter2.png)
 
 ## Customize admin
 ``` python
@@ -620,7 +620,7 @@ class SignUpAdmin(admin.ModelAdmin):
 
 admin.site.register(SignUp, SignUpAdmin)
 ```
-![init project file](static_in_pro/media/F07_site_admin.png)
+![F07_site_admin](static_in_pro/media/F07_site_admin.png)
 
 
 # 11	MODEL FORM
@@ -635,19 +635,20 @@ class SignUpForm(forms.ModelForm):
 		fields = ['full_name', 'email']
 		### exclude = ['full_name']
 ```
+
 Modify admin.py
 ``` python
 from django.contrib import admin
 
 # Register your models here.
-from .forms import SignUpForm
++from .forms import SignUpForm
 from .models import SignUp
 
 class SignUpAdmin(admin.ModelAdmin):
 	list_display = ["__unicode__", "timestamp", "updated"]
-	form = SignUpForm
-	# class Meta:
-	# 	model = SignUp
++	form = SignUpForm
++	# class Meta:
++	# 	model = SignUp
 
 admin.site.register(SignUp, SignUpAdmin)
 ```
