@@ -785,16 +785,14 @@ Home函数里添加下列打印
 
 如果只是执行网址访问http://127.0.0.1:8000/
 > 
-<pre>
-\<WSGIRequest: GET '/'\>
-\<QueryDict: {}\>
-</pre>
+<WSGIRequest: GET '/'>
+<QueryDict: {}>
 
 如果按”sign up”提交
 > 
 <pre>
-\<WSGIRequest: POST '/'\>
-\<QueryDict: {u'csrfmiddlewaretoken': [u'xcdCoiISxk5yS4GSbVHENmjWwnhvj7kk'], u'email': [u'bin@gmail.edu'], u'full_name': [u'bin']}\>
+<WSGIRequest: POST '/'>
+<QueryDict: {u'csrfmiddlewaretoken': [u'xcdCoiISxk5yS4GSbVHENmjWwnhvj7kk'], u'email': [u'bin@gmail.edu'], u'full_name': [u'bin']}>
 </pre>
 
 # 15	CUSTOM FORM IN A VIEW (NON MODELFORM)
