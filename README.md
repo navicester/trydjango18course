@@ -419,9 +419,9 @@ Default:
 
 A tuple of template loader classes, specified as strings. Each Loader class knows how to import templates from a particular source. Optionally, a tuple can be used instead of a string. The first item in the tuple should be the Loader’s module, subsequent items are passed to the Loader during initialization. See The Django template language: for Python programmers.
 
-# 7	TEMPLATE CONFIGURATION
+# 8	TEMPLATE CONFIGURATION
 
-``` django
+``` python
 # Create your views here.
 def home(request):
 	context = {}
@@ -473,7 +473,7 @@ Django tried loading these templates, in this order:
 
 修改settings.py
 
-``` django
+``` python
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -502,6 +502,75 @@ Django tried loading these templates, in this order:
         o	D:\virtualdir\trydjango18\lib\site-packages\django\contrib\auth\templates\home.html (File does not exist)
         o	D:\virtualdir\trydjango18\lib\site-packages\django\contrib\admin\templates\home.html (File does not exist)
         o	D:\virtualdir\trydjango18\lib\site-packages\django\contrib\admindocs\templates\home.html (File does not exist)
+</pre>
+
+
+# 9	MODELS
+https://docs.djangoproject.com/en/1.8/ref/models/
+https://docs.djangoproject.com/en/1.8/ref/models/fields/
+
+``` python
+from django.db import models
+
+# Create your models here.
+class SignUp(models.Model):
+	email = models.EmailField()
+	full_name = models.CharField(max_length=120, blank=True, null=True)
+	timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
+	updated = models.DateTimeField(auto_now_add=False, auto_now=True)
+
+	def __unicode__(self): #Python 3.3 is __str__
+		return self.email
+```
+## migrate database
+makemigrations : 初始化migrations
+
+migrates : 实际运行migrations并且存储到database
+
+``` dos
+(trydjango18) D:\virtualdir\trydjango18\src>python manage.py makemigrations
+```
+> 
+<pre>
+Migrations for 'newsletter':
+  0001_initial.py:
+    - Create model SignUp
+</pre>
+
+``` dos
+(trydjango18) D:\virtualdir\trydjango18\src>python manage.py migrate
+```
+> 
+<pre>
+Operations to perform:
+  Synchronize unmigrated apps: staticfiles, admindocs, messages
+  Apply all migrations: sessions, admin, sites, auth, contenttypes, newsletter
+Synchronizing apps without migrations:
+  Creating tables...
+    Running deferred SQL...
+  Installing custom SQL...
+Running migrations:
+  Rendering model states... DONE
+  Applying newsletter.0001_initial... OK
+</pre>
+
+如果不做修改重新执行该命令，将显示No migrations to apply
+
+``` dos
+(trydjango18) D:\virtualdir\trydjango18\src>python manage.py migrate
+```
+
+> 
+<pre>
+Operations to perform:
+  Synchronize unmigrated apps: staticfiles, admindocs, messages
+  Apply all migrations: sessions, admin, sites, auth, contenttypes, newsletter
+Synchronizing apps without migrations:
+  Creating tables...
+    Running deferred SQL...
+  Installing custom SQL...
+Running migrations:
+  No migrations to apply.
 </pre>
 
 
