@@ -1077,11 +1077,11 @@ Grid systems are used for creating page layouts through a series of rows and col
 {% endblock %}
 ```
 
-``` python
+``` html
 {% block content %}
 	<div class="row">
 		<div class=" col-sm-3  pull-right">
-			<p class='lead text-align-center'>{{ title }}</p>
+			<p class="lead text-align-center">{{ title }}</p>
 			<form method="POST" action=''> {% csrf_token%}
 			{{ form|crispy }}
 			<input type="submit" value="sign up">
@@ -1089,7 +1089,7 @@ Grid systems are used for creating page layouts through a series of rows and col
 		</div>	
 
 		<div class='col-sm-3'>
-		    <p class='lead text-align-center'>Django &amp; Bootstrap</p>
+		    <p class="lead text-align-center">Django &amp; Bootstrap</p>
 		</div>
 
 		<div class='col-sm-3'>
@@ -1166,6 +1166,221 @@ text-align-center can also be moved to css\custom.css
 {% endblock%}
 ```
 
+# 25	URL NAMES AS LINKS
+在trydjango18目录下面创建文件views.py
+
+添加about函数
+
+``` python 
+from django.shortcuts import render
+
+def about(request):
+	return render(request, "about.html", {})
+```	
+
+在urls.py中添加url
+``` python
+urlpatterns = patterns('',
+    url(r'^about/$', 'trydjango18.views.about', name='about'),
+)
+```
+在navbar.html添加about和contact相关的内容
+``` python
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+          <!--
+              <li class="active"><a href="#">Home</a></li>
+              <li><a href="/about">About</a></li>
+              <li><a href="/contact">Contact</a></li>
+          -->
+            <li class="active"><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'about' %}">About</a></li>
+            <li><a href="{% url 'contact' %}">Contact</a></li>
+```            
+可以用`{% url '???' %}`来代替显式的url
+
+# 26	STYLING MVP LANDING PART2
+forms.html
+•	extend base.html
+•	crispy，并修改submit按钮class
+•	添加div，调整宽度和增加title
+``` html
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="row">
+<div class ="col-sm-6 col-sm-offset-3">
+{% if title %}
+<h1 class = "{% if title_align_center %}text-align-center{% endif %}">{{title}}</h1>
+{% endif %}
+<form method='POST' action=''>{% csrf_token %}
+{{ form|crispy }}
+
+<input class = "btn btn-primary" type='submit' value='Submit' />
+</form>
+</div>
+</div>
+{% endblock %}
+```
+newsletter\views.py
+添加title和对齐的变量
+def contact(request):
+    title = 'Contact Us'    
+    title_align_center = True
+ ……
+
+    context = {
+        "form": form,
+        "title": title,
+        "title_align_center": title_align_center,
+    }
+return render(request, "forms.html", context)
+
+# 27	DJANGO REGISTRATION REDUX
+http://django-registration-redux.readthedocs.org/en/latest/quickstart.html
+## 安装
+``` dos
+pip install django-registration-redux
+```
+
+settings.py
+``` python
+INSTALLED_APPS = (
+    #third party apps
+    'registration',
+)
+#DJANGO REGISTRATION REDUX SETTINGS
+ACCOUNT_ACTIVATION_DAYS = 7
+REGISTRATION_AUTO_LOGIN = True
+SITE_ID = 1
+```
+urls.py
+``` python
+urlpatterns = [
+    url(r'^accounts/', include('registration.backends.default.urls')),
+]
+
+urlpatterns = [
+    url(r'^login/$',
+        auth_views.login,
+        {'template_name': 'registration/login.html'},
+        name='auth_login'),
+    url(r'^logout/$',
+        auth_views.logout,
+        {'template_name': 'registration/logout.html'},
+        name='auth_logout'),
+    url(r'^password/change/$',
+        auth_views.password_change,
+        {'post_change_redirect': reverse_lazy('auth_password_change_done')},
+        name='auth_password_change'),
+    url(r'^password/change/done/$',
+        auth_views.password_change_done,
+        name='auth_password_change_done'),
+    url(r'^password/reset/$',
+        auth_views.password_reset,
+        {'post_reset_redirect': reverse_lazy('auth_password_reset_done')},
+        name='auth_password_reset'),
+    url(r'^password/reset/complete/$',
+        auth_views.password_reset_complete,
+        name='auth_password_reset_complete'),
+    url(r'^password/reset/done/$',
+        auth_views.password_reset_done,
+        name='auth_password_reset_done'),
+]
+```
+## migrations
+``` dos
+python manage.py makemigrations
+python manage.py migrate
+```
+
+注册
+
+http://127.0.0.1:8000/accounts/register/
+
+## Templates
+从django-registration-redux拷贝 “registration” 目录到template 
+
+Decorate registration templates
+
+registration_form.html
+``` html
+{% extends "base.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class='row'>
+<div class='col-sm-6 col-sm-offset-3'>
+<h1>Register for free!</h1>
+<form method="post" action=".">
+  {% csrf_token %}
+  {{ form|crispy }}
+
+  <input class='btn btn-block btn-primary' type="submit" value="{% trans 'Join' %}" />
+</form>
+</div>
+</div>
+
+<hr/>
+<div class='row'>
+<div class='col-sm-6 col-sm-offset-3 text-align-center'>
+<p>Need to <a href="{% url 'auth_login' %}">Login</a>?</p>
+</div>
+</div>
+ ```
+ 
+注册之后在admin里面registration profiles里生成激活码
+ 
+## 激活
+activation_email.html
+
+下面这句话可以激活用户，activation_key是参数
+
+http://{{site.domain}}{% url 'registration_activate' activation_key %}
+
+从registration.backends.default.urls中可以看出，registration_activate对应的是
+``` python
+urlpatterns = [
+    url(r'^activate/complete/$',
+        TemplateView.as_view(template_name='registration/activation_complete.html'),
+        name='registration_activation_complete'),
+    # Activation keys get matched by \w+ instead of the more specific
+    # [a-fA-F0-9]{40} because a bad activation key should still get to the view;
+    # that way it can return a sensible "invalid key" message instead of a
+    # confusing 404.
+    url(r'^activate/(?P<activation_key>\w+)/$',
+        ActivationView.as_view(),
+        name='registration_activate'),
+```        
+手动运行http://127.0.0.1:8000/accounts/activate/688d2cb0b8c765b995c9025ff69924d1d474c96f即可激活用户
+
+实际系统里，127.0.0.1:8000用换成site.domain指定的域名
+
+## Mail注册配置
+``` python
+DEFAULT_FROM_EMAIL = 'hebinn2004@sina.com' 这个必须要有否则会报错from_addr出错为webmaster@localhost
+EMAIL_HOST = 'smtp.sina.com'
+EMAIL_HOST_USER = DEFAULT_FROM_EMAIL
+EMAIL_HOST_PASSWORD = '******'
+EMAIL_PORT = 25
+ACCOUNT_ACTIVATION_DAYS = 7
+REGISTRATION_AUTO_LOGIN = True
+SITE_ID = 1
+```
+邮箱地址目前可以重复，后面得修改变成不能重复 （tag ?）
+
+# 28	UPDATE DJANGO LOGIN URL TO CUSTOM URL
+
+settings.py
+``` python
+LOGIN_REDIRECT_URL = '/'
+
+REGISTRATION_EMAIL_SUBJECT_PREFIX = '[Django Registration trydjango18]'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+SEND_ACTIVATION_EMAIL = True
+```
 
 
 
