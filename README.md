@@ -790,12 +790,12 @@ Home函数里添加下列打印
 
 如果按”sign up”提交
 > 
-<pre>
 <WSGIRequest: POST '/'>
 <QueryDict: {u'csrfmiddlewaretoken': [u'xcdCoiISxk5yS4GSbVHENmjWwnhvj7kk'], u'email': [u'bin@gmail.edu'], u'full_name': [u'bin']}>
-</pre>
+
 
 # 15	CUSTOM FORM IN A VIEW (NON MODELFORM)
+
 在forms.py中添加contactForm
 ``` python
 class ContactForm(forms.Form):
@@ -803,6 +803,7 @@ class ContactForm(forms.Form):
 	email = forms.EmailField()
 	message = forms.CharField()
 ```	
+
 在views.py中添加Contact函数
 ``` python
 def contact(request):
@@ -818,6 +819,7 @@ def contact(request):
 	}
 	return render(request, "forms.html", context)
 ```	
+
 在urls.py中添加入口
 ``` python
 urlpatterns = patterns('',
@@ -825,12 +827,12 @@ urlpatterns = patterns('',
     url(r'^contact/$', 'newsletter.views.contact', name='contact'),
 )
 ```
+
 创建forms.html文件
 ``` html
 <form method='POST' action=''>{% csrf_token %}
-{{ form.as_p }}
-
-<input type='submit' value='Submit' />
+	{{ form.as_p }}
+	<input type='submit' value='Submit' />
 </form>
 ```
 
