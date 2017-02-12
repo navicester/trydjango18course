@@ -30,14 +30,14 @@ Include  Lib  Scripts
 Windows激活
 ``` dos
 D:\virtualdir\trydjango18>Scripts\activate
+(trydjango18) D:\virtualdir\trydjango18>
 ```
-> (trydjango18) D:\virtualdir\trydjango18>
 
 查看生成的库
 ``` dos
 (trydjango18) D:\virtualdir\trydjango18>pip freeze
 ```
-> wheel==0.24.0
+> <pre>wheel==0.24.0</pre>
 
 视频教程里面生成的目录是 wsgiref==0.1.2
 
@@ -57,8 +57,10 @@ https://www.djangoproject.com/download/
 (trydjango18) D:\virtualdir\trydjango18>pip freeze
 ```
 > 
+<pre>
 Django==1.8  
 wheel==0.24.0  
+</pre>
 
 `pip freeze > requirements.txt` 将安装软件信息存储到requirements.txt  
 后面可以通过`pip install –r requirements.txt`直接安装全部软件
@@ -68,7 +70,7 @@ wheel==0.24.0
 (trydjango18) D:\virtualdir\trydjango18>django-admin.py startproject trydjango18
 (trydjango18) D:\virtualdir\trydjango18>ls
 ```
-> Include  Lib  Scripts  pip-selfcheck.json  trydjango18
+> <pre> Include  Lib  Scripts  pip-selfcheck.json  trydjango18 </pre>
 
 执行startproject命令后，会生成下列文件
 > 
@@ -107,7 +109,7 @@ Directory of D:\virtualdir\trydjango18
 ``` dos
 (trydjango18) D:\virtualdir\trydjango18>ls
 ```
-> Include  Lib  Scripts  pip-selfcheck.json  src
+> <pre> Include  Lib  Scripts  pip-selfcheck.json  src </pre>
 
 ## Emulate a django server
 ``` dos
@@ -128,7 +130,7 @@ Quit the server with CTRL-BREAK.
 python manage.py runserver 8080
 python manage.py runserver 0.0.0.0:8000
 ```
-![it works](static_in_pro/media/F02_2_it_works.png)
+![it works](static_in_pro/media/F02_it_works.png)
 
 ## 将代码提交到github
 先创建repository trydjango18course
