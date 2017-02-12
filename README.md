@@ -1382,5 +1382,337 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 SEND_ACTIVATION_EMAIL = True
 ```
 
+# 29	AUTHENTICATION LINKS IN NAVBAR
+
+navbar.html
+``` html
+          <ul class="nav navbar-nav navbar-right">
+          {% if request.user.is_authenticated %}
+            <li><a href="{% url 'auth_logout' %}">Logout</a></li>
+            {% else %}
+            <li><a href="{% url 'registration_register' %}">Register</a></li>
+            <li><a href="{% url ' auth_login' %}">Login</a></li>
+            {% endif %}
+          </ul>
+```          
+registration_register  is url name of register (django-registration-redux)
+
+# 30	LOGIN FORM IN BOOTSTRAP NAVBAR
+navbar.html
+``` html
+          {% if not request.user.is_authenticated and not "/accounts/login" in request.get_full_path %}
+            <form class='navbar-form navbar-right' method='POST' action='{% url "auth_login" %}'>{% csrf_token %}
+              <div class='form-group'>
+                  <input type='text' class='form-control' name='username' placeholder='Username' /> 
+              </div>
+              <div class='form-group'>
+                  <input type='password' class='form-control' name='password' placeholder='Password' />
+              </div>
+              <button type='submit' class='btn btn-default'>Login</button>
+          </form>
+          {% endif %}
+```          
+这人action的link action='{% url "auth_login" %}'就是前面的Login，这儿的用户名和密码的name也是一致的
+
+
+# 31	STYLING MVP LANDING PART3
+## 效果1
+
+
+base.html,将jumbotron移到class container外面
+``` vbscript-html
+  <body>
+    {% include 'navbar.html' %}
+    {% block container %}
+<div class="container">
+      {% block jumbotron %}
+      {% endblock%}
+      {% block content %}
+      {% endblock%}
+    </div> <!-- /container -->
+    {% endblock%}
+    {% include 'javascript.html' %}
+  </body>
+```  
+修改为
+``` html
+  <body>
+    {% include 'navbar.html' %}
+    {% block container %}
+      {% block jumbotron %}
+      {% endblock%}
+    <div class="container">
+      {% block content %}
+      {% endblock%}
+    </div> <!-- /container -->
+    {% endblock%}
+    {% include 'javascript.html' %}
+  </body>
+```
+home.html,在jumbotron里面插入container class
+``` html
+	<div class="jumbotron">
+	  <div class="container">
+		<div class="row">
+```		
+## 效果二
+修改jumbotron背景色
+``` html
+. jumbotron {
+	background-color: #0E3D14 !important;
+}
+```
+
+## 效果三
+设置navbar背景
+``` html
+.navbar-static-top {
+  background-color: #0E3D14;
+}
+```
+## 效果四
+让navbar和jumbotron之间平稳连接
+navbar和jumbotron之间的边框减少
+``` html
+.navbar-static-top {
+  margin-bottom: 0px;
+}
+```
+设置边框颜色，颜色变浅一点
+``` html
+.navbar-static-top {
+  border-color: #1A5F23;
+}
+```
+
+## 效果五
+修改brand链接颜色，添加hover选项
+ 
+ 
+``` html 
+.navbar-default .navbar-brand {
+  color: #777;
+}
+
+.navbar-default .navbar-brand:hover {
+  color: #FFF;
+}
+```
+
+## 效果六
+修改nav link的hover颜色 Home Contact About
+``` vbscript-html
+.navbar-default .navbar-nav>li>a:hover {
+  color: #999;
+}
+```
+
+## 效果七
+修改toggle按钮属性
+``` html
+.navbar-default .navbar-toggle {
+ border-color: transparent !important;
+}
+
+.navbar-toggle:hover {
+	background-color: #1A5F23 !important;
+}
+
+.navbar-toggle {
+	background-color: #0E3D14 !important;
+}
+```
+In navbar-static-top.css
+``` html
+body {
+  min-height: 1000px;
+}
+```
+在navbar.html中对应的几个class的定义位置
+``` html
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'img/mvp_landing_logo.png' %}" /></a>
+```          
+Button is for small screen
+
+# 32	LOGO IMAGE IN NAVBAR
+图片高度23
+``` html
+    {% load staticfiles %}
+          <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'img/mvp_landing_logo.png' %}" /></a>
+ ```
+
+# 33	PROMO VIDEO AND IMAGE
+ 
+home.html
+
+添加视频
+
+``` html
+	 	  <div class='col-sm-6 video'>
+	 	      <embed width="560" height="315"  src= "http://player.youku.com/player.php/Type/Folder/Fid/26679028/Ob/1/sid/XMTQ2Nzg5NjM4NA==/v.swf" quality="high" width="480" height="400" align="middle" allowScriptAccess="always" allowFullScreen="true" mode="transparent" type="application/x-shockwave-flash"></embed>
+	 	  </div>
+```	 	  
+添加图片
+``` html
+		<div class='col-sm-3'>
+		    <p class='lead text-align-center'>Django &amp; Bootstrap</p>
+			<img src='{% static "img/marketing1.jpg" %}' class='img-responsive' />
+		</div>
+```
+
+# 34	ICON WITH FONT AWESOME
+
+http://fortawesome.github.io/Font-Awesome/
+
+http://fortawesome.github.io/Font-Awesome/get-started/
+
+http://fontawesome.io
+
+## CDN
+In head_css.html
+``` html
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+```
+home.html
+``` html
+	<div class='col-sm-3'>
+	    <p class='lead text-align-center'>Created for Starters <br/>
+	    <span class='fa-stack fa-lg fa-5x'>
+	    <i class='fa fa-comment-o fa-stack-2x'></i>
+	    <i style='color:yellow;' class="fa fa-bolt fa-stack-1x"></i>
+	    </span>
+	    </p>
+	</div>
+
+	<div class='col-sm-3'>
+	    <p class='lead text-align-center'>Always Open Source <br/><br/>
+		<span class="fa-stack fa-lg fa-5x">
+		<i class="fa fa-circle-o-notch fa-stack-2x fa-spin "></i>
+		<!-- <i class="fa fa-square-o fa-stack-2x"></i> -->
+		<i class="fa fa-github fa-stack-1x "></i>
+		</span>
+		</p>
+	</div>	
+```
+旋转 `fa-spin`
+
+# 35	CONTENT FOR AUTHENTICATED USERS
+添加about.html
+
+home.html
+``` html
+{% block jumbotron %}
+  {# % if not request.user.is_authenticated % #}
+	<div class="jumbotron">
+	</div>
+  {# % endif % #}
+{% endblock %}
+
+{% block content %}
+{% if request.user.is_authenticated %}
+<h1>You are logged in!</h1>
+	{% queryset %}
+{% else %}
+{% endif %}	
+view.py
+    if request.user.is_authenticated() and request.user.is_staff:
+        context = {
+            "queryset" : [123,456]
+```
+
+# 36	QUERYSETBASICS
+https://docs.djangoproject.com/en/1.8/topics/db/queries/
+
+https://docs.djangoproject.com/en/1.8/ref/models/querysets/
+
+views.py
+``` python
+def home(request):
+	if request.user.is_authenticated() and request.user.is_staff:
+		#print(SignUp.objects.all())
+		# i = 1
+		# for instance in SignUp.objects.all():
+		# 	print(i)
+		# 	print(instance.full_name)
+		# 	i += 1
+
+		queryset = SignUp.objects.all().order_by('-timestamp') #.filter(full_name__iexact="Justin")
+		#print(SignUp.objects.all().order_by('-timestamp').filter(full_name__iexact="Justin").count())
+		context = {
+			"queryset": queryset
+		}
+```		
+home.html
+``` python
+	{% if queryset %}
+	<h2>Welcome Staff</h2>
+	<table class='table'>
+	{% for instance in queryset %}
+		<tr>
+		    <td>{{ forloop.counter }}</td>
+		    <td>{{ instance.email }}</td>
+		    <td>{{ instance.full_name }}</td>
+		    <td>{{ instance.timestamp|timesince }} ago</td>
+		</tr>
+		{% if instance.email == "abc@gmail.edu" %}
+		<tr><td>is equal</td></tr>
+		{% endif %}
+	{% endfor %}
+	</table>
+	{% endif %}
+```
+
+# 37	SETTING FOR DIFFERENT ENVIRONMENT
+https://www.webfaction.com/
+
+remove settings.py
+
+add folder “settings”, and file `__init__.py`, `base.py`, `local.py`, product.py
+
+in __init__.py
+``` python
+from .base import *
+
+try:
+	from .local import *
+except:
+	pass
+
+try:
+	from .production import *
+except:
+	pass
+
+try:
+	from .imac import *
+except:
+	pass
+
+try:
+	from .macbookpro import *
+except:
+	pass
+```
+
+# 38	USING SSH WITH WEBFACTION SECURE SHELL
+
+# 39	USING SSH WITH WEBFACTION SECURE SHELL
+
+# 40	FTP FOR PRODUCTION SETTINGS
+
+# 41	INSTALL PIP+ MIGRATE + STATIC SETTINGS
+
+# 42	FIX STATIC SETTINGS
+
+# 43	FINAL ONE
 
 
