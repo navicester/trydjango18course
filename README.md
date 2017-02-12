@@ -574,6 +574,472 @@ Running migrations:
 </pre>
 
 
+# 10	ADMIN
+将自己的模块加入管理工具中，这样我们就能够通过这个漂亮的界面添加、修改和删除数据库中的对象了。
+
+在Admin中注册SignUp
+``` python
+from django.contrib import admin
+from .models import SignUp
+
+admin.site.register(SignUp, SignUpAdmin)
+```
+
+model将会显示在admin中
+
+## Customize admin
+``` python
+from django.contrib import admin
+
+# Register your models here.
+from .models import SignUp
+
+class SignUpAdmin(admin.ModelAdmin):
+	list_display = ["__unicode__", "timestamp", "updated"]
+	class Meta:
+		model = SignUp
+
+admin.site.register(SignUp, SignUpAdmin)
+```
+
+# 11	MODEL FORM
+Newsletter下面添加文件forms.py
+``` python
+from django import forms
+
+from .models import SignUp
+class SignUpForm(forms.ModelForm):
+	class Meta:
+		model = SignUp
+		fields = ['full_name', 'email']
+		### exclude = ['full_name']
+```
+Modify admin.py
+``` python
+from django.contrib import admin
+
+# Register your models here.
+from .forms import SignUpForm
+from .models import SignUp
+
+class SignUpAdmin(admin.ModelAdmin):
+	list_display = ["__unicode__", "timestamp", "updated"]
+	form = SignUpForm
+	# class Meta:
+	# 	model = SignUp
+
+admin.site.register(SignUp, SignUpAdmin)
+```
+
+# 12	FORM VALIDATION
+给 “email” & “full_name”添加validation函数
+``` python
+class SignUpForm(forms.ModelForm):
+	class Meta:
+		model = SignUp
+		fields = ['full_name', 'email']
+		### exclude = ['full_name']
+	
+	def clean_email(self):
+		email = self.cleaned_data.get('email')
+		email_base, provider = email.split("@")
+		domain, extension = provider.split('.')
+		# if not domain == 'USC':
+		# 	raise forms.ValidationError("Please make sure you use your USC email.")
+		if not extension == "edu":
+			raise forms.ValidationError("Please use a valid .EDU email address")
+		return email
+
+	def clean_full_name(self):
+		full_name = self.cleaned_data.get('full_name')
+		#write validation code.
+		return full_name
+```
+
+# 13	VIEW AND TEMPLATE CONTEXT
+``` python
+from django.shortcuts import render
+
+# Create your views here.
+def home(request):
+	title = 'Welcome'
+
+	if request.user.is_authenticated():
+		title = "My title is %s" % (request.user)
+	context = {
+		"title": title,
+	}
+
+	return render(request, "home.html", context)
+```
+home.html
+``` vbscript-html
+<h1>{{title}}</h1>
+{{user}}
+{{request.user}}
+```
+这两个user分别是由下面的middleware传进来的
+``` python
+    'django.template.context_processors.request',
+    'django.contrib.auth.context_processors.auth',
+```
+
+# 14	FORM IN A VIEW
+https://docs.djangoproject.com/en/1.8/ref/forms/
+``` python
+from .forms import SignUpForm
+from .models import SignUp
+
+# Create your views here.
+def home(request):
+	title = 'Welcome'
+	form = SignUpForm(request.POST or None)
+	context = {
+		"title": title,
+		"form": form
+	}
+	if form.is_valid():
+		#form.save()
+		#print request.POST['email'] #not recommended, raw data without validation
+		instance = form.save(commit=False)
+
+		full_name = form.cleaned_data.get("full_name")
+		if not full_name:
+			full_name = "New full name"
+		instance.full_name = full_name
+		# if not instance.full_name:
+		# 	instance.full_name = "Justin"
+		instance.save()
+		context = {
+			"title": "Thank you"
+		}
+
+	return render(request, "home.html", context)
+```
+form = SignUpForm(request.POST or None)这句话中记得加 or None，否则的话SignUpForm会一直执行Validation
+
+即使只是网址GET访问，也会出现下列validation错误
+ 
+调用form.is_valid，form会执行form类里面的那些validation函数
+form.save(commit=False)并不会真正的保存数据 ，instance.save()才会真正保存
+> 
+This save() method accepts an optional commit keyword argument, which accepts either True or False. If you call save() with commit=False, then it will return an object that hasn’t yet been saved to the database. In this case, it’s up to you to call save() on the resulting model instance.
+
+home.html
+``` html
+<h1>{{title}}</h1>
+{{user}}
+{{request.user}}
+<form method="POST" action=''> {% csrf_token%}
+{{form.as_p}}
+<input type="submit" value="sign up">
+</form>
+```
+action指定了提交之后的重定向地址，可以用”.”
+as_p = as paragraph
+
+## GET vs POST
+ 
+Home函数里添加下列打印
+``` python
+	print request
+	print request.POST
+```
+在shell里面查看打印输出
+
+如果只是执行网址访问http://127.0.0.1:8000/
+> 
+<WSGIRequest: GET '/'>
+<QueryDict: {}>
+
+如果按”sign up”提交
+> 
+<WSGIRequest: POST '/'>
+<QueryDict: {u'csrfmiddlewaretoken': [u'xcdCoiISxk5yS4GSbVHENmjWwnhvj7kk'], u'email': [u'bin@gmail.edu'], u'full_name': [u'bin']}>
+
+# 15	CUSTOM FORM IN A VIEW (NON MODELFORM)
+在forms.py中添加contactForm
+``` python
+class ContactForm(forms.Form):
+	full_name = forms.CharField(required=False)
+	email = forms.EmailField()
+	message = forms.CharField()
+```	
+在views.py中添加Contact函数
+``` python
+def contact(request):
+	form = ContactForm(request.POST or None)
+
+	if form.is_valid():
+		# for key, value in form.cleaned_data.iteritems():
+		# 	print key, value
+		# 	#print form.cleaned_data.get(key)
+
+	context = {
+		"form": form,
+	}
+	return render(request, "forms.html", context)
+```	
+在urls.py中添加入口
+``` python
+urlpatterns = patterns('',
+    url(r'^$', 'newsletter.views.home', name='home'),
+    url(r'^contact/$', 'newsletter.views.contact', name='contact'),
+)
+```
+创建forms.html文件
+``` html
+<form method='POST' action=''>{% csrf_token %}
+{{ form.as_p }}
+
+<input type='submit' value='Submit' />
+</form>
+```
+
+# 16	SETUP EMAIL
+https://docs.djangoproject.com/en/1.8/topics/email/
+
+In settings.py
+``` python
+EMAIL_HOST = 'smtp.sina.com'
+EMAIL_HOST_USER = 'hebinn2004@sina.com'
+EMAIL_HOST_PASSWORD = ''
+EMAIL_PORT = 25
+EMAIL_USE_TLS = True
+```
+views.py
+```
+from django.conf import settings
+from django.core.mail import send_mail
+
+def contact(request):
+	title = 'Contact Us'
+	title_align_center = True
+	form = ContactForm(request.POST or None)
+	if form.is_valid():
+		# for key, value in form.cleaned_data.iteritems():
+		# 	print key, value
+		# 	#print form.cleaned_data.get(key)
+		form_email = form.cleaned_data.get("email")
+		form_message = form.cleaned_data.get("message")
+		form_full_name = form.cleaned_data.get("full_name")
+		# print email, message, full_name
+		subject = 'Site contact form'
+		from_email = settings.EMAIL_HOST_USER
+		to_email = [from_email, 'youotheremail@email.com']
+		contact_message = "%s: %s via %s"%( 
+				form_full_name, 
+				form_message, 
+				form_email)
+		some_html_message = """
+		<h1>hello</h1>
+		"""
+		send_mail(subject, 
+				contact_message, 
+				from_email, 
+				to_email, 
+				html_message=some_html_message,
+				fail_silently=True)
+
+	context = {
+		"form": form,
+		"title": title,
+		"title_align_center": title_align_center,
+	}
+	return render(request, "forms.html", context)
+```
+
+# 17	STATIC FILE IN DJANGO1.8
+
+Static files (CSS, JavaScript, Images)
+
+https://docs.djangoproject.com/en/1.8/howto/static-files/
+``` python
+STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_in_env", "static_root")
+    
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static_in_pro", "our_static"),
+    #os.path.join(BASE_DIR, "static_in_env"),
+    #'/var/www/static/',
+)
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_in_env", "media_root")
+```
+STATIC_URL : 服务器相对地址
+
+MEDIA_ROOT : 文件系统绝对路径，保存用户上传文件.
+
+MEDIA_URL: URL that handles the media served from MEDIA_ROOT. Make sure to use a trailing slash.
+
+执行 python manage.py collectstatic，STATICFILES_DIRS中的文件将会拷贝到STATIC_ROOT中 
+
+# 18	SERVING STATIC FILES
+``` python
+from django.conf import settings
+from django.conf.urls.static import static
+
+if settings.DEBUG:
+	urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+	urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+```
+
+# 19	ADDING BOOTSTRAP TO DJANGO
+## Bootstrap CDN
+CDN = content of network
+The folks over at [MaxCDN](https://www.maxcdn.com/) graciously provide CDN support for Bootstrap's CSS and JavaScript. Just use these [Bootstrap CDN](https://www.bootstrapcdn.com/) links.
+``` html
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+```
+
+创建 base.html
+
+拷贝该例子的源代码 http://getbootstrap.com/examples/navbar-static-top/
+
+在文件头添加 CDN或者使用文件
+
+将css/js/img文件下载到本地保存到static_in_pro
+•	bootstrap.min.css
+•	navbar-static-top.css
+•	bootstrap.min.js
+•	ie10-viewport-bug-workaround.js
+将`{% load staticfiles %}` 添加到base.html开头，改变css/js/img的链接
+``` html
+{% load staticfiles %}
+    <!-- <link href="../../dist/css/bootstrap.min.css" rel="stylesheet"> -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- <link href="navbar-static-top.css" rel="stylesheet"> -->
+    <link href="{% static 'css/navbar-static-top.css' %}" rel="stylesheet">
+
+{% load staticfiles %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
+```
+执行 python manage.py collectstatic
+
+# 20	DJANGO TEMPLATE INCLUDE, INHERITANCE, BLOCKS
+## include
+将base.html里面`<nav>…</nav>`的代码块移到navbar.html里面
+
+In base.html, move the navbar code `<nav>…</nav>` to navbar.html
+
+在base.html里面添加include
+
+And include it in base.html
+``` html
+{% include 'navbar.html' %}
+```
+verbatim可以保持原来的格式
+``` html
+{% include 'navbar.html' %}
+{% verbatim %}
+```
+同样的方法，可以添加head_css.html和javascript.html，别忘了在文件开始添加 load staticfile
+
+## extents
+在 home.html中, 添加
+``` html
+{% extends "base.html" %}
+```
+
+## block
+将div jumbotron移到home.html，用block jumbotron标记
+
+http://getbootstrap.com/examples/jumbotron/
+``` html
+{% block "jumbotron" %}
+	<!-- Main component for a primary marketing message or call to action -->
+	<div class="jumbotron">
+	<h1>Navbar example</h1>
+	<p>This example is a quick exercise to illustrate how the default, static and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.</p>
+	<p>To see the difference between static and fixed top navbars, just scroll.</p>
+	<p>
+	  <a class="btn btn-lg btn-primary" href="../../components/#navbar" role="button">View navbar docs &raquo;</a>
+	</p>
+	</div>
+{% endblock%}
+```
+并且在 base.html中添加block jumbotron
+``` html
+{% block "jumbotron" %}
+{% endblock%}
+```
+{{block.super}} 会显示super内容.
+
+In base.html
+``` html
+<title>{% block head_title %}MVP Landing{% endblock %}</title>
+In home.html
+{% block head_title %}Welcome | {{ block.super }}{% endblock %}
+```
+
+# 21	THIRD PARTY LIBRARY CRISPY FORM
+http://django-crispy-forms.readthedocs.org/en/latest/
+
+在当前python环境下安装最新稳定版本
+``` dos
+pip install --upgrade django-crispy-forms
+```
+安装完成之后将安装信息更新到requirements.txt
+``` dos
+pip freeze > requirements.txt
+```
+settings.py中，将crispy_forms添加到INSTALLED_APPS:
+``` python
+INSTALLED_APPS = (
+    ...
+    'crispy_forms',
+)
+```
+运行 python manage.py makemigrations 看看是否需要migrations
+
+settings.py添加一些对应的配置信息
+``` python
+#Crispy FORM TAGs SETTINGS
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
+```
+在html文件修改，home.html
+``` html
+{% load crispy_forms_tags %}
+{{ form|crispy }}
+```
+
+
+# 22	BOOTSTRAP GRID SYSTEM
+http://getbootstrap.com/css/#grid
+
+`Class “container-fluid”` 全屏
+
+`<div class="container">` 这个只显示中间部分，宽度不会全屏
+> 
+Introduction
+Grid systems are used for creating page layouts through a series of rows and columns that house your content. Here's how the Bootstrap grid system works:
+•	Rows must be placed within a `.container` (fixed-width) or `.container-fluid` (full-width) for proper alignment and padding.
+•	Use rows to create horizontal groups of columns.
+•	Content should be placed within columns, and only columns may be immediate children of rows.
+•	Predefined grid classes like `.row` and `.col-xs-4` are available for quickly making grid layouts. Less mixins can also be used for more semantic layouts.
+•	Columns create gutters (gaps between column content) via `padding`. That padding is offset in rows for the first and last column via negative margin on `.rows`.
+•	The negative margin is why the examples below are outdented. It's so that content within grid columns is lined up with non-grid content.
+•	Grid columns are created by specifying the number of twelve available columns you wish to span. For example, three equal columns would use three .col-xs-4.
+•	If more than 12 columns are placed within a single row, each group of extra columns will, as one unit, wrap onto a new line.
+•	Grid classes apply to devices with screen widths greater than or equal to the breakpoint sizes, and override grid classes targeted at smaller devices. Therefore, e.g. applying any .col-md-* class to an element will not only affect its styling on medium devices but also on large devices if a .col-lg-* class is not present.
+
+## Tips
+如果想要固定宽度fixed, 使用 `col-xs-???`, 否则当屏幕变得更小级别时，它会变成全屏.
+例如，如果你使用`col-sm-3`, 在smal size或者更大宽度显示时，它会显示1/4（3/12）屏幕宽度, 但是如果转到xsmall屏幕时，它将会100%显示.
+
+
 
 
 
