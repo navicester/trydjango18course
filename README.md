@@ -71,7 +71,7 @@ pip freeze > requirements.txt将安装软件信息存储到requirements.txt
     urls.py
 </pre>
 
-![????](static_in_pro/media/F01_project_files.png)
+![init project file](static_in_pro/media/F02_project_files.png)
 
 为避免与virtualenv名字冲突，把项目目录改成 “src”
 
@@ -119,6 +119,7 @@ Quit the server with CTRL-BREAK.
 python manage.py runserver 8080
 python manage.py runserver 0.0.0.0:8000
 ```
+![it works](static_in_pro/media/F02_2_it_works.png)
 
 ## 将代码提交到github
 先创建repository trydjango18course
@@ -588,6 +589,8 @@ admin.site.register(SignUp, SignUpAdmin)
 ```
 
 model将会显示在admin中
+![init project file](static_in_pro/media/F07_admin_newsletter.png)
+![init project file](static_in_pro/media/F07_admin_newsletter2.png)
 
 ## Customize admin
 ``` python
@@ -603,6 +606,7 @@ class SignUpAdmin(admin.ModelAdmin):
 
 admin.site.register(SignUp, SignUpAdmin)
 ```
+![init project file](static_in_pro/media/F07_site_admin.png)
 
 
 # 11	MODEL FORM
@@ -722,7 +726,9 @@ def home(request):
 form = SignUpForm(request.POST or None)这句话中记得加 or None，否则的话SignUpForm会一直执行Validation
 
 即使只是网址GET访问，也会出现下列validation错误
- 
+
+![init project file](static_in_pro/media/F14_form_validation_error.png)
+	
 调用form.is_valid，form会执行form类里面的那些validation函数
 form.save(commit=False)并不会真正的保存数据 ，instance.save()才会真正保存
 > 
@@ -742,7 +748,7 @@ action指定了提交之后的重定向地址，可以用”.”
 as_p = as paragraph
 
 ## GET vs POST
- 
+![init project file](static_in_pro/media/F14_form_get_post.png) 
 Home函数里添加下列打印
 ``` python
 	print request
@@ -878,6 +884,8 @@ MEDIA_ROOT : 文件系统绝对路径，保存用户上传文件.
 MEDIA_URL: URL that handles the media served from MEDIA_ROOT. Make sure to use a trailing slash.
 
 执行 python manage.py collectstatic，STATICFILES_DIRS中的文件将会拷贝到STATIC_ROOT中 
+
+![init project file](static_in_pro/media/F17_static_file_tree.png)
 
 # 18	SERVING STATIC FILES
 ``` python
@@ -1038,6 +1046,9 @@ Grid systems are used for creating page layouts through a series of rows and col
 •	If more than 12 columns are placed within a single row, each group of extra columns will, as one unit, wrap onto a new line.
 •	Grid classes apply to devices with screen widths greater than or equal to the breakpoint sizes, and override grid classes targeted at smaller devices. Therefore, e.g. applying any .col-md-* class to an element will not only affect its styling on medium devices but also on large devices if a .col-lg-* class is not present.
 
+![init project file](static_in_pro/media/F22_grid.png)
+![init project file](static_in_pro/media/F22_grid_explain.png)
+
 ## Tips
 如果想要固定宽度fixed, 使用 `col-xs-???`, 否则当屏幕变得更小级别时，它会变成全屏.
 例如，如果你使用`col-sm-3`, 在smal size或者更大宽度显示时，它会显示1/4（3/12）屏幕宽度, 但是如果转到xsmall屏幕时，它将会100%显示.
@@ -1107,6 +1118,8 @@ Grid systems are used for creating page layouts through a series of rows and col
 	</div>
 {% endblock%}
  ```
+
+![init project file](static_in_pro/media/F23_contain_fluid.png)
  
 `<div class="container-fluid">`会全屏平铺显示
 
@@ -1332,8 +1345,11 @@ registration_form.html
 </div>
 </div>
  ```
- 
+
+![init project file](static_in_pro/media/F27_register.png) 
 注册之后在admin里面registration profiles里生成激活码
+![init project file](static_in_pro/media/F27_register_profile.png)
+
  
 ## 激活
 activation_email.html
@@ -1420,6 +1436,8 @@ navbar.html
 # 31	STYLING MVP LANDING PART3
 ## 效果1
 
+![init project file](static_in_pro/media/F31_effert1_1.png)
+![init project file](static_in_pro/media/F31_effert1_2.png)
 
 base.html,将jumbotron移到class container外面
 ``` vbscript-html
@@ -1475,12 +1493,16 @@ home.html,在jumbotron里面插入container class
 ## 效果四
 让navbar和jumbotron之间平稳连接
 navbar和jumbotron之间的边框减少
+![init project file](static_in_pro/media/F31_effert4_1.png)
+![init project file](static_in_pro/media/F31_effert4_2.png)
 ``` html
 .navbar-static-top {
   margin-bottom: 0px;
 }
 ```
 设置边框颜色，颜色变浅一点
+![init project file](static_in_pro/media/F31_effert4_3.png)
+
 ``` html
 .navbar-static-top {
   border-color: #1A5F23;
@@ -1489,7 +1511,9 @@ navbar和jumbotron之间的边框减少
 
 ## 效果五
 修改brand链接颜色，添加hover选项
- 
+![init project file](static_in_pro/media/F31_effert5_1.png)
+![init project file](static_in_pro/media/F31_effert5_2.png)
+![init project file](static_in_pro/media/F31_effert5_3.png) 
  
 ``` html 
 .navbar-default .navbar-brand {
@@ -1544,6 +1568,7 @@ body {
           <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'img/mvp_landing_logo.png' %}" /></a>
 ```          
 Button is for small screen
+![init project file](static_in_pro/media/F31_effert7.png) 
 
 # 32	LOGO IMAGE IN NAVBAR
 图片高度23
@@ -1553,7 +1578,7 @@ Button is for small screen
  ```
 
 # 33	PROMO VIDEO AND IMAGE
- 
+![init project file](static_in_pro/media/F33_promo_video_image.png)
 home.html
 
 添加视频
