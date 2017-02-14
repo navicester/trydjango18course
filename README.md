@@ -379,7 +379,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ```
 
-ROOT_URLCONF
+## ROOT_URLCONF
 ``` python
 #root of project
 ROOT_URLCONF = 'trydjango18.urls'
@@ -466,7 +466,9 @@ def home(request):
 	return render(request, "home.html", context)
 ```
 
-如果不创建template的话, http://127.0.0.1:8000/ 将会报告下面的错误调试信息
+需要在项目中创建template文件并且指定搜索路径, 否则http://127.0.0.1:8000/ 将会报告下面的错误调试信息，改网站调用home()函数
+
+下面的Debug信息显示，django只是搜了默认的系统路径，跟工程相关的路径并没有搜索
 
 <pre>
 TemplateDoesNotExist 
@@ -493,7 +495,9 @@ INSTALLED_APPS = (
 )
 ```
 
-如果将newsletter注释掉，django会不找不到模板文件，报错如下:
+如果将newsletter注释掉，django会不找不到模板文件
+
+在newsletter下面，还需要创建*template/home.html*,否则报错如下:
 > 
 <pre>
 Template-loader postmortem
@@ -503,15 +507,15 @@ Django tried loading these templates, in this order:
         o	D:\virtualdir\trydjango18\lib\site-packages\django\contrib\auth\templates\home.html (File does not exist)
         o	D:\virtualdir\trydjango18\lib\site-packages\django\contrib\admin\templates\home.html (File does not exist)
         o	D:\virtualdir\trydjango18\lib\site-packages\django\contrib\admindocs\templates\home.html (File does not exist)
-        o	D:\virtualdir\trydjango18\src\newsletter\templates\home.html (File does not exist)
+        o	D:\virtualdir\trydjango18\src\newsletter\templates\home.html (File does not exist)  //指定目录下面没收到模板文件
 </pre>
 
-在“newsletter”下面创建文件“home.html”, it works
+在“newsletter”下面创建文件“templats/home.html”, it works
 
 ## 指定template位置
 本例子中，我们把templates从application目录中移到root文件夹，在src目录创建templates文件夹
 
-修改settings.py中的template设置
+修改settings.py中的template设置，添加目录到DIRS
 
 ``` python
 TEMPLATES = [
@@ -537,7 +541,7 @@ TEMPLATES = [
 Template-loader postmortem
 Django tried loading these templates, in this order:
     •	Using loader django.template.loaders.filesystem.Loader: 
-        o	D:\virtualdir\trydjango18\src\templates\home.html (File does not exist)
+        o	D:\virtualdir\trydjango18\src\templates\home.html (File does not exist)   //指定目录下面没收到模板文件
     •	Using loader django.template.loaders.app_directories.Loader: 
         o	D:\virtualdir\trydjango18\lib\site-packages\django\contrib\auth\templates\home.html (File does not exist)
         o	D:\virtualdir\trydjango18\lib\site-packages\django\contrib\admin\templates\home.html (File does not exist)
