@@ -319,7 +319,7 @@ def home(request):
 ```
 
 # 7	DJANGO SETTING OVERVIEW
-
+*settings.py*的目录:
 ``` dos
 (trydjango18) D:\virtualdir\trydjango18\src>tree /F
 ```
@@ -363,9 +363,9 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 """
 ```
 
-## BASE_DIR
+## 定义 BASE_DIR
 
-返回当前路径
+返回当前路径的方法
 
 ``` python
 import os.path
@@ -377,7 +377,10 @@ os.path.dirname(__file__)
 
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+```
 
+ROOT_URLCONF
+``` python
 #root of project
 ROOT_URLCONF = 'trydjango18.urls'
 ```
@@ -407,15 +410,18 @@ TEMPLATES = [
     },
 ]
 ```
-## TEMPLATE_DIRS
+
+**Deprecated since version 1.8**
+
+### TEMPLATE_DIRS
 
 Default: () (Empty tuple)
-Deprecated since version 1.8: Set the DIRS option of a DjangoTemplates backend instead.
+**Deprecated since version 1.8**: Set the [DIRS](https://docs.djangoproject.com/en/1.8/ref/settings/#std:setting-TEMPLATES-DIRS) option of a DjangoTemplates backend instead.
 
-List of locations of the template source files searched by django.template.loaders.filesystem.Loader, in search order.
+List of locations of the template source files searched by [django.template.loaders.filesystem.Loader](https://docs.djangoproject.com/en/1.8/ref/templates/api/#django.template.loaders.filesystem.Loader), in search order.
 Note that these paths should use Unix-style forward slashes, even on Windows.
 
-## TEMPLATE_CONTEXT_PROCESSORS
+### TEMPLATE_CONTEXT_PROCESSORS
 
 Default:
 ``` python
@@ -430,7 +436,7 @@ Default:
 )
 ```
 
-**Deprecated since version 1.8**: Set the 'context_processors' option in the OPTIONS of a DjangoTemplates backend instead.
+**Deprecated since version 1.8**: Set the 'context_processors' option in the [OPTIONS](https://docs.djangoproject.com/en/1.8/ref/settings/#std:setting-TEMPLATES-OPTIONS) of a DjangoTemplates backend instead.
 
 A tuple of callables that are used to populate the context in RequestContext. These callables take a request object as their argument and return a dictionary of items to be merged into the context.
 
@@ -438,7 +444,7 @@ Changed in Django 1.8:
 
 Built-in template context processors were moved from django.core.context_processors to django.template.context_processors in Django 1.8.
 
-## TEMPLATE_LOADERS
+### TEMPLATE_LOADERS
 Default:
 ``` python
 (
@@ -447,9 +453,9 @@ Default:
 )
 ```
 
-**Deprecated since version 1.8**: Set the 'loaders' option in the OPTIONS of a DjangoTemplates backend instead.
+**Deprecated since version 1.8**: Set the 'loaders' option in the [OPTIONS](https://docs.djangoproject.com/en/1.8/ref/settings/#std:setting-TEMPLATES-OPTIONS) of a DjangoTemplates backend instead.
 
-A tuple of template loader classes, specified as strings. Each Loader class knows how to import templates from a particular source. Optionally, a tuple can be used instead of a string. The first item in the tuple should be the Loader’s module, subsequent items are passed to the Loader during initialization. See The Django template language: for Python programmers.
+A tuple of template loader classes, specified as strings. Each Loader class knows how to import templates from a particular source. Optionally, a tuple can be used instead of a string. The first item in the tuple should be the Loader’s module, subsequent items are passed to the Loader during initialization. See [The Django template language: for Python programmers](https://docs.djangoproject.com/en/1.8/ref/templates/api/).
 
 # 8	TEMPLATE CONFIGURATION
 创建view处理函数
@@ -473,6 +479,7 @@ Django tried loading these templates, in this order:
         o	D:\virtualdir\trydjango18\lib\site-packages\django\contrib\admindocs\templates\home.html (File does not exist)
 </pre>
 
+## 指定INSTALLED_APP，默认搜索该目录下template目录
 在newsletter下面创建template目录，并且在“INSTALLED_APPS”下面添加“newsletter”，django将会搜索该template目录
 ``` django
 INSTALLED_APPS = (
@@ -501,6 +508,7 @@ Django tried loading these templates, in this order:
 
 在“newsletter”下面创建文件“home.html”, it works
 
+## 指定template位置
 本例子中，我们把templates从application目录中移到root文件夹，在src目录创建templates文件夹
 
 修改settings.py中的template设置
