@@ -1,7 +1,7 @@
 
 # 2	START PROJECT
 ## 创建开发环境 virtualenv 
-工作目录：D:\virtualdir\trydjango18
+当前工作目录：D:\virtualdir\trydjango18
 ``` dos
 D:\>mkdir virtualdir
 D:\>cd virtualdir
@@ -255,8 +255,9 @@ urlpatterns = patterns('',
 )
 ```
 
-# 4 APPS
+# 5 APPS
 ## startapp
+创建app : newsletter
 ``` dos
 (trydjango18) D:\virtualdir\trydjango18\src>python manage.py startapp newsletter
 ```
@@ -272,7 +273,7 @@ newsletter/
      views.py
      </pre>
 
-# 5 FIRST VIEW AND URL ROUTING
+# 6 FIRST VIEW AND URL ROUTING
 添加最基本的view功能
 
 ## 首先添加url
@@ -283,16 +284,30 @@ urlpatterns = patterns('',
     url(r'^$', 'newsletter.views.home', name='home'),
 )
 ```
+
+| Symbol / Expression     | Matched String     |
+|:--------|---------:|
+|. | (Dot)	Any character. |
+|^ | (Caret)	Start of string. |
+|$ |	End of string. |
+|* |	0 or more repetitions. |
+|+ |	1 or more repetitions. |
+|? |	0 or 1 repetitions. |
+|\| |	A \| B means A or B. |
+|[a-z]	| Any lowercase character. |
+|\w	    | Any alphanumeric character or _. |
+|\d	    |Any digit.  |
+
 这儿的name后面可以用在template里面的url引用，例如
 
-templates\navbar.html
+*templates\navbar.html*
 
 ``` html
 <li class="active"><a href="{% url 'home' %}">Home</a></li>
 ```
 
 ## 添加view里面的实现
-文件`newsletter\view.py`
+文件*newsletter\view.py*
 ``` python
 from django.shortcuts import render 
 
@@ -303,7 +318,7 @@ def home(request):
 
 ```
 
-# 6	DJANGO SETTING OVERVIEW
+# 7	DJANGO SETTING OVERVIEW
 
 ``` dos
 (trydjango18) D:\virtualdir\trydjango18\src>tree /F
