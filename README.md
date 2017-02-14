@@ -466,7 +466,7 @@ def home(request):
 	return render(request, "home.html", context)
 ```
 
-需要在项目中创建template文件并且指定搜索路径, 否则http://127.0.0.1:8000/ 将会报告下面的错误调试信息，改网站调用home()函数
+需要在项目中创建template文件并且指定搜索路径, 否则http://127.0.0.1:8000/ 将会报告下面的错误调试信息，该网站调用home()函数
 
 下面的Debug信息显示，django只是搜了默认的系统路径，跟工程相关的路径并没有搜索
 
@@ -554,6 +554,7 @@ https://docs.djangoproject.com/en/1.8/ref/models/
 
 https://docs.djangoproject.com/en/1.8/ref/models/fields/
 
+## 创建一个model SignUp
 ``` python
 from django.db import models
 
@@ -567,7 +568,7 @@ class SignUp(models.Model):
 	def __unicode__(self): #Python 3.3 is __str__
 		return self.email
 ```
-## migrate database
+## 迁移数据库 migrate database
 
 makemigrations : 初始化migrations
 
@@ -600,7 +601,7 @@ Running migrations:
   Applying newsletter.0001_initial... OK
 </pre>
 
-如果不做修改重新执行该命令，将显示No migrations to apply
+如果不做修改重新执行该命令，将显示`No migrations to apply`
 ``` dos
 (trydjango18) D:\virtualdir\trydjango18\src>python manage.py migrate
 ```
@@ -633,7 +634,7 @@ model将会显示在admin中
 ![F07_admin_newsletter](static_in_pro/media/F07_admin_newsletter.png)
 ![F07_admin_newsletter2](static_in_pro/media/F07_admin_newsletter2.png)
 
-## Customize admin
+## 定制管理模块 Customize admin
 ``` python
 from django.contrib import admin
 
@@ -651,7 +652,7 @@ admin.site.register(SignUp, SignUpAdmin)
 
 
 # 11	MODEL FORM
-Newsletter下面添加文件forms.py
+Newsletter下面添加文件*forms.py*
 ``` python
 from django import forms
 
@@ -663,7 +664,7 @@ class SignUpForm(forms.ModelForm):
 		### exclude = ['full_name']
 ```
 
-Modify admin.py
+修改 *admin.py*
 ``` python
 from django.contrib import admin
 
@@ -707,7 +708,7 @@ class SignUpForm(forms.ModelForm):
 
 # 13	VIEW AND TEMPLATE CONTEXT
 
-渲染模板
+## 渲染模板
 ``` python
 from django.shortcuts import render
 
@@ -724,9 +725,9 @@ def home(request):
 	return render(request, "home.html", context)
 ```
 
-初始模板文件
+## 初始模板文件
 
-home.html
+*home.html*
 ``` vbscript-html
 <h1>{{title}}</h1>
 {{user}}
@@ -740,6 +741,8 @@ home.html
 
 # 14	FORM IN A VIEW
 https://docs.djangoproject.com/en/1.8/ref/forms/
+
+## 表单后台处理
 ``` python
 from .forms import SignUpForm
 from .models import SignUp
@@ -783,9 +786,9 @@ def home(request):
 > 
 This save() method accepts an optional commit keyword argument, which accepts either True or False. If you call save() with commit=False, then it will return an object that hasn’t yet been saved to the database. In this case, it’s up to you to call save() on the resulting model instance.
 
-添加表单内容
+## 添加表单内容
 
-home.html
+*home.html*
 
 ``` html
 <h1>{{title}}</h1>
@@ -812,14 +815,17 @@ Home函数里添加下列打印
 
 如果只是执行网址访问http://127.0.0.1:8000/
 > 
+<pre>
 <WSGIRequest: GET '/'>
 <QueryDict: {}>
+</pre>
 
 如果按”sign up”提交
 > 
+<pre>
 <WSGIRequest: POST '/'>
 <QueryDict: {u'csrfmiddlewaretoken': [u'xcdCoiISxk5yS4GSbVHENmjWwnhvj7kk'], u'email': [u'bin@gmail.edu'], u'full_name': [u'bin']}>
-
+</pre>
 
 # 15	CUSTOM FORM IN A VIEW (NON MODELFORM)
 
