@@ -829,7 +829,7 @@ Home函数里添加下列打印
 
 # 15	CUSTOM FORM IN A VIEW (NON MODELFORM)
 
-在forms.py中添加contactForm
+在*forms.py*中添加contactForm
 ``` python
 class ContactForm(forms.Form):
 	full_name = forms.CharField(required=False)
@@ -837,7 +837,7 @@ class ContactForm(forms.Form):
 	message = forms.CharField()
 ```	
 
-在views.py中添加Contact函数
+在*views.py*中添加Contact函数
 ``` python
 def contact(request):
 	form = ContactForm(request.POST or None)
@@ -853,15 +853,15 @@ def contact(request):
 	return render(request, "forms.html", context)
 ```	
 
-在urls.py中添加入口
+在*urls.py*中添加入口
 ``` python
 urlpatterns = patterns('',
     url(r'^$', 'newsletter.views.home', name='home'),
-    url(r'^contact/$', 'newsletter.views.contact', name='contact'),
++    url(r'^contact/$', 'newsletter.views.contact', name='contact'),
 )
 ```
 
-创建forms.html文件
+创建*forms.html*文件
 ``` html
 <form method='POST' action=''>{% csrf_token %}
 	{{ form.as_p }}
@@ -872,7 +872,7 @@ urlpatterns = patterns('',
 # 16	SETUP EMAIL
 https://docs.djangoproject.com/en/1.8/topics/email/
 
-In settings.py
+In *settings.py*
 ``` python
 EMAIL_HOST = 'smtp.sina.com'
 EMAIL_HOST_USER = 'hebinn2004@sina.com'
@@ -880,7 +880,7 @@ EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 25
 EMAIL_USE_TLS = True
 ```
-views.py
+*views.py*
 ``` python
 from django.conf import settings
 from django.core.mail import send_mail
@@ -963,6 +963,8 @@ if settings.DEBUG:
 
 # 19	ADDING BOOTSTRAP TO DJANGO
 ## Bootstrap CDN
+包含: bootstrap.min.css, bootstrap-theme.min.css, bootstrap.min.js
+
 CDN = content of network
 The folks over at [MaxCDN](https://www.maxcdn.com/) graciously provide CDN support for Bootstrap's CSS and JavaScript. Just use these [Bootstrap CDN](https://www.bootstrapcdn.com/) links.
 ``` html
@@ -1029,7 +1031,7 @@ verbatim可以保持原来的格式
 ```
 
 ## block
-将div jumbotron移到home.html，用block jumbotron标记
+将`div jumbotron`移到*home.html*，用`block jumbotron`标记
 
 http://getbootstrap.com/examples/jumbotron/
 ``` html
@@ -1132,16 +1134,16 @@ http://getbootstrap.com/css/#grid
 {% block jumbotron %}
 	<div class="jumbotron">
 	  <div class="container">
-		<div class="row">
-	      <div class='col-sm-6'>
++		<div class="row">
++	      <div class='col-sm-6'>
 			<h1>Try Django 1.8</h1>
 			<p>The MVP Landing project is designed to get your project started. The goal is to help you launch as soon as possible with the least amount of investment using time or money. Join Us today.</p>
 			<p>
 			  <a class="btn btn-lg btn-primary" href="" role="button">Join Us &raquo;</a>
 			</p>
 		  </div>
-	 	  <div class='col-sm-6 style=”background-color:black;heigh:300px;”>
-	 	  </div>
++	 	  <div class='col-sm-6 style=”background-color:black;heigh:300px;”>
++	 	  </div>
 	    </div>
 	  </div>
 	</div>
@@ -1150,8 +1152,8 @@ http://getbootstrap.com/css/#grid
 
 ``` python
 {% block content %}
-<div class="row">
-  <div class="col-xs-3 pull-right">
++<div class="row">
++  <div class="col-xs-3 pull-right">
     <h1>{{title}}</h1>
     {{user}}
     {{request.user}}
@@ -1159,15 +1161,16 @@ http://getbootstrap.com/css/#grid
     {{form|crispy}}
     <input type="submit" value="sign up">
     </form>
-  </div>
-</div>
++  </div>
++</div>
 {% endblock %}
 ```
 
 ``` html
 {% block content %}
 	<div class="row">
-		<div class=" col-sm-3  pull-right">
+-		<div class=" col-sm-3">
++		<div class=" col-sm-3  pull-right">		
 			<p class="lead text-align-center">{{ title }}</p>
 			<form method="POST" action=''> {% csrf_token%}
 			{{ form|crispy }}
@@ -1210,9 +1213,10 @@ Extend in home.html
 ``` html
 <style>
 {% block style %}
-.text-align-center {
-	text-align: center;
-}
++.text-align-center {
++	text-align: center;
++}
+
 .navbar-static-top {
 	margin-bottom: 0px !important;
 }
@@ -1294,35 +1298,36 @@ forms.html
 •	crispy，并修改submit按钮class
 •	添加div，调整宽度和增加title
 ``` html
-{% extends "base.html" %}
-{% load crispy_forms_tags %}
++{% extends "base.html" %}
++{% load crispy_forms_tags %}
 
-{% block content %}
-<div class="row">
-<div class ="col-sm-6 col-sm-offset-3">
-{% if title %}
-<h1 class = "{% if title_align_center %}text-align-center{% endif %}">{{title}}</h1>
-{% endif %}
-<form method='POST' action=''>{% csrf_token %}
-{{ form|crispy }}
-
-<input class = "btn btn-primary" type='submit' value='Submit' />
-</form>
-</div>
-</div>
-{% endblock %}
++{% block content %}
++<div class="row">
++	<div class ="col-sm-6 col-sm-offset-3">
++		{% if title %}
++		<h1 class = "{% if title_align_center %}text-align-center{% endif %}">{{title}}</h1>
++		{% endif %}
+		<form method='POST' action=''>{% csrf_token %}
+-		{{ form }}
++		{{ form|crispy }}			
+-		<input type='submit' value='Submit' />
++		<input class = "btn btn-primary" type='submit' value='Submit' />
+		</form>
++	</div>
++</div>
++{% endblock %}
 ```
 newsletter\views.py
 添加title和对齐的变量
 def contact(request):
-    title = 'Contact Us'    
-    title_align_center = True
++    title = 'Contact Us'    
++    title_align_center = True
  ……
 
     context = {
         "form": form,
-        "title": title,
-        "title_align_center": title_align_center,
++        "title": title,
++        "title_align_center": title_align_center,
     }
 return render(request, "forms.html", context)
 
