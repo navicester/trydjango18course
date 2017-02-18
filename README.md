@@ -1543,7 +1543,7 @@ navbar.html
 ```		
 ## 效果二
 修改jumbotron背景色
-``` html
+``` css
 . jumbotron {
 	background-color: #0E3D14 !important;
 }
@@ -1551,14 +1551,16 @@ navbar.html
 
 ## 效果三
 设置navbar背景
-``` html
+``` css
 .navbar-static-top {
   background-color: #0E3D14;
 }
 ```
 ## 效果四
 让navbar和jumbotron之间平稳连接
+
 navbar和jumbotron之间的边框减少
+
 ![init project file](static_in_pro/media/F31_effert4_1.png)
 ![init project file](static_in_pro/media/F31_effert4_2.png)
 ``` html
@@ -1581,7 +1583,7 @@ navbar和jumbotron之间的边框减少
 ![init project file](static_in_pro/media/F31_effert5_2.png)
 ![init project file](static_in_pro/media/F31_effert5_3.png) 
  
-``` html 
+``` css 
 .navbar-default .navbar-brand {
   color: #777;
 }
@@ -1593,7 +1595,7 @@ navbar和jumbotron之间的边框减少
 
 ## 效果六
 修改nav link的hover颜色 Home Contact About
-``` vbscript-html
+``` css
 .navbar-default .navbar-nav>li>a:hover {
   color: #999;
 }
@@ -1601,7 +1603,7 @@ navbar和jumbotron之间的边框减少
 
 ## 效果七
 修改toggle按钮属性
-``` html
+``` css
 .navbar-default .navbar-toggle {
  border-color: transparent !important;
 }
@@ -1614,13 +1616,13 @@ navbar和jumbotron之间的边框减少
 	background-color: #0E3D14 !important;
 }
 ```
-In navbar-static-top.css
+In *navbar-static-top.css*
 ``` html
 body {
   min-height: 1000px;
 }
 ```
-在navbar.html中对应的几个class的定义位置
+在*navbar.html*中对应的几个class的定义位置
 ``` html
     <nav class="navbar navbar-default navbar-static-top">
       <div class="container">
