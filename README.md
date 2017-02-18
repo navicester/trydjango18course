@@ -1138,10 +1138,10 @@ http://getbootstrap.com/css/#grid
 			<p>
 			  <a class="btn btn-lg btn-primary" href="" role="button">Join Us &raquo;</a>
 			</p>
-		  </div>
++		  </div>
 +	 	  <div class='col-sm-6 style=”background-color:black;heigh:300px;”>
 +	 	  </div>
-	    </div>
++	    </div>
 	  </div>
 	</div>
 {% endblock %}
@@ -1326,7 +1326,7 @@ def contact(request):
 +        "title": title,
 +        "title_align_center": title_align_center,
     }
-return render(request, "forms.html", context)
+    return render(request, "forms.html", context)
 
 # 27	DJANGO REGISTRATION REDUX
 http://django-registration-redux.readthedocs.org/en/latest/quickstart.html
@@ -1399,20 +1399,22 @@ registration_form.html
 ``` html
 {% extends "base.html" %}
 {% load i18n %}
-{% load crispy_forms_tags %}
++{% load crispy_forms_tags %}
 
 {% block content %}
-<div class='row'>
-<div class='col-sm-6 col-sm-offset-3'>
-<h1>Register for free!</h1>
++<div class='row'>
++<div class='col-sm-6 col-sm-offset-3'>
++<h1>Register for free!</h1>
 <form method="post" action=".">
   {% csrf_token %}
-  {{ form|crispy }}
-
-  <input class='btn btn-block btn-primary' type="submit" value="{% trans 'Join' %}" />
+-  {{ form }}
++  {{ form|crispy }}
+  
+-  <input class='btn btn-block btn-primary' type="submit" value="{% trans 'Join' %}" />
++  <input type="submit" value="{% trans 'Join' %}" />  
 </form>
-</div>
-</div>
++</div>
++</div>
 
 <hr/>
 <div class='row'>
@@ -1483,10 +1485,10 @@ navbar.html
           <ul class="nav navbar-nav navbar-right">
           {% if request.user.is_authenticated %}
             <li><a href="{% url 'auth_logout' %}">Logout</a></li>
-            {% else %}
+          {% else %}
             <li><a href="{% url 'registration_register' %}">Register</a></li>
             <li><a href="{% url ' auth_login' %}">Login</a></li>
-            {% endif %}
+          {% endif %}
           </ul>
 ```          
 registration_register  is url name of register (django-registration-redux)
@@ -1515,14 +1517,16 @@ navbar.html
 ![init project file](static_in_pro/media/F31_effert1_1.png)
 ![init project file](static_in_pro/media/F31_effert1_2.png)
 
-base.html,将jumbotron移到class container外面
+*base.html*,将jumbotron移到`class container`外面
 ``` vbscript-html
   <body>
     {% include 'navbar.html' %}
     {% block container %}
-<div class="container">
-      {% block jumbotron %}
-      {% endblock%}
++      {% block jumbotron %}
++      {% endblock%}	
+    <div class="container">
+-      {% block jumbotron %}
+-      {% endblock%}
       {% block content %}
       {% endblock%}
     </div> <!-- /container -->
@@ -1530,25 +1534,11 @@ base.html,将jumbotron移到class container外面
     {% include 'javascript.html' %}
   </body>
 ```  
-修改为
-``` html
-  <body>
-    {% include 'navbar.html' %}
-    {% block container %}
-      {% block jumbotron %}
-      {% endblock%}
-    <div class="container">
-      {% block content %}
-      {% endblock%}
-    </div> <!-- /container -->
-    {% endblock%}
-    {% include 'javascript.html' %}
-  </body>
-```
-home.html,在jumbotron里面插入container class
+
+*home.html*,在jumbotron里面插入container class
 ``` html
 	<div class="jumbotron">
-	  <div class="container">
++	  <div class="container">
 		<div class="row">
 ```		
 ## 效果二
