@@ -1,4 +1,5 @@
-
+**Index**
+[2	START PROJECT](./README.md#2-start-project)
 # 2	START PROJECT
 ## 创建开发环境 virtualenv 
 创建工作目录：D:\virtualdir\trydjango18
@@ -1563,7 +1564,8 @@ navbar和jumbotron之间的边框减少
 
 ![init project file](static_in_pro/media/F31_effert4_1.png)
 ![init project file](static_in_pro/media/F31_effert4_2.png)
-``` html
+
+``` css
 .navbar-static-top {
   margin-bottom: 0px;
 }
@@ -1571,7 +1573,7 @@ navbar和jumbotron之间的边框减少
 设置边框颜色，颜色变浅一点
 ![init project file](static_in_pro/media/F31_effert4_3.png)
 
-``` html
+``` css
 .navbar-static-top {
   border-color: #1A5F23;
 }
@@ -1595,6 +1597,7 @@ navbar和jumbotron之间的边框减少
 
 ## 效果六
 修改nav link的hover颜色 Home Contact About
+
 ``` css
 .navbar-default .navbar-nav>li>a:hover {
   color: #999;
@@ -1616,12 +1619,14 @@ navbar和jumbotron之间的边框减少
 	background-color: #0E3D14 !important;
 }
 ```
+
 In *navbar-static-top.css*
 ``` html
 body {
   min-height: 1000px;
 }
 ```
+
 在*navbar.html*中对应的几个class的定义位置
 ``` html
     <nav class="navbar navbar-default navbar-static-top">
@@ -1634,8 +1639,10 @@ body {
             <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'img/mvp_landing_logo.png' %}" /></a>
-```          
+```
+
 Button is for small screen
+
 ![init project file](static_in_pro/media/F31_effert7.png) 
 
 # 32	LOGO IMAGE IN NAVBAR
