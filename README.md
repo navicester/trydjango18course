@@ -3,8 +3,7 @@
 ## 创建开发环境 virtualenv 
 创建工作目录：D:\virtualdir\trydjango18
 ``` dos
-D:\>mkdir virtualdir
-D:\>cd virtualdir
+D:\>mkdir virtualdir & cd virtualdir
 ```
 创建虚拟环境工作区
 ``` dos
@@ -68,7 +67,7 @@ wheel==0.24.0
 ## Start Project
 ``` dos
 (trydjango18) D:\virtualdir\trydjango18>django-admin.py startproject trydjango18
-(trydjango18) D:\virtualdir\trydjango18>ls
+生成的文件如下:
 ```
 > <pre> Include  Lib  Scripts  pip-selfcheck.json  trydjango18 </pre>
 
@@ -87,8 +86,7 @@ wheel==0.24.0
 为避免与virtualenv名字冲突，把项目目录改成 “src”
 
 ``` dos
-(trydjango18) D:\virtualdir\trydjango18>rename trydjango18 src
-(trydjango18) D:\virtualdir\trydjango18>dir
+(trydjango18) D:\virtualdir\trydjango18>rename trydjango18 src & dir
 ```
 > 
 <pre> 
@@ -106,10 +104,6 @@ Directory of D:\virtualdir\trydjango18
                6 Dir(s)  38,498,160,640 bytes free
 </pre>
                
-``` dos
-(trydjango18) D:\virtualdir\trydjango18>ls
-```
-> <pre> Include  Lib  Scripts  pip-selfcheck.json  src </pre>
 
 ## Emulate a django server
 ``` dos
@@ -147,7 +141,7 @@ git push -u origin master
 ``` dos
 (trydjango18) D:\virtualdir\trydjango18\src>python manage.py migrate
 ```
-如果直接运行migrate命令，会有报错: settings.DATABASES is improperly configured,这是因为我们的database没有配置好
+如果直接运行migrate命令，会有报错: *settings.DATABASES is improperly configured*,这是因为我们的database没有配置好
 
 ## 修改settings.py
 添加 “ENGINE” 和 “NAME” 配置，例子中我们选用sqlite3，关于mysql的配置会有专门章节介绍
