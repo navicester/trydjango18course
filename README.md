@@ -1,5 +1,7 @@
 **Index**
-[2	START PROJECT](./README.md#2-start-project)
+- [2	START PROJECT](README.md#2-start-project)
+- [3	FIRST MIGRATION](README.md#3-first-migration)
+
 # 2	START PROJECT
 ## 创建开发环境 virtualenv 
 创建工作目录：D:\virtualdir\trydjango18
