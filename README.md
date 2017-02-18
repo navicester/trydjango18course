@@ -226,7 +226,7 @@ Running migrations:
 ## enable admin
 去掉setting和url中的一些注释语句
   
-setting.py
+*setting.py*
   
 ``` python
 INSTALLED_APPS = (
@@ -236,7 +236,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
 )
 ```
-urls.py
+*urls.py*
 ``` python
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -272,7 +272,7 @@ newsletter/
 添加最基本的view功能
 
 ## 首先添加url
-trydjango18\urls.py
+*trydjango18\urls.py*
 ``` python
 urlpatterns = patterns('',
     # Examples:
@@ -677,7 +677,7 @@ admin.site.register(SignUp, SignUpAdmin)
 ```
 
 # 12	FORM VALIDATION
-给 “email” & “full_name”添加validation函数
+给 “email” & “full_name”添加validation函数 - clear_[field_name]
 ``` python
 class SignUpForm(forms.ModelForm):
 	class Meta:
