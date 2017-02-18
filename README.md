@@ -713,6 +713,7 @@ def home(request):
 
 	if request.user.is_authenticated():
 		title = "My title is %s" % (request.user)
+		
 	context = {
 		"title": title,
 	}
@@ -739,29 +740,30 @@ https://docs.djangoproject.com/en/1.8/ref/forms/
 
 ## 表单后台处理
 ``` python
-from .forms import SignUpForm
-from .models import SignUp
++from .forms import SignUpForm
++from .models import SignUp
 
 # Create your views here.
 def home(request):
 	title = 'Welcome'
-	form = SignUpForm(request.POST or None)
++	form = SignUpForm(request.POST or None)
 	context = {
 		"title": title,
-		"form": form
++		"form": form
 	}
-	if form.is_valid():
-		#form.save()
-		#print request.POST['email'] #not recommended, raw data without validation
-		instance = form.save(commit=False)
++	if form.is_valid():
++		#form.save()
++		#print request.POST['email'] #not recommended, raw data without validation
++		instance = form.save(commit=False)
 
-		full_name = form.cleaned_data.get("full_name")
-		if not full_name:
-			full_name = "New full name"
-		instance.full_name = full_name
-		# if not instance.full_name:
-		# 	instance.full_name = "Justin"
-		instance.save()
++		full_name = form.cleaned_data.get("full_name")
++		if not full_name:
++			full_name = "New full name"
++		instance.full_name = full_name
++		# if not instance.full_name:
++		# 	instance.full_name = "Justin"
++		instance.save()
+		
 		context = {
 			"title": "Thank you"
 		}
@@ -789,10 +791,10 @@ This save() method accepts an optional commit keyword argument, which accepts ei
 <h1>{{title}}</h1>
 {{user}}
 {{request.user}}
-<form method="POST" action=''> {% csrf_token%}
-	{{form.as_p}}
-	<input type="submit" value="sign up">
-</form>
++<form method="POST" action=''> {% csrf_token%}
++	{{form.as_p}}
++	<input type="submit" value="sign up">
++</form>
 ```
 action指定了提交之后的重定向地址，可以用”.”
 
