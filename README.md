@@ -16,7 +16,7 @@ New python executable in trydjango18\Scripts\python.exe
 Installing setuptools, pip, wheel...done.  
 </pre>
 
-查看生成的文件: `D:\virtualdir\trydjango18>ls·
+查看生成的文件: `D:\virtualdir\trydjango18>ls`
 > 
 <pre>
 Include  Lib  Scripts
